@@ -5,6 +5,7 @@ Welcome to your new gem! In this directory, you'll find the files you need to be
 TODO: Delete this and the text above, and describe your gem
 
 [![Build Status](https://travis-ci.org/sue445/gitlab_awesome_release.svg?branch=master)](https://travis-ci.org/sue445/gitlab_awesome_release)
+[![Code Climate](https://codeclimate.com/github/sue445/gitlab_awesome_release/badges/gpa.svg)](https://codeclimate.com/github/sue445/gitlab_awesome_release)
 
 ## Installation
 
