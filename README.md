@@ -4,6 +4,8 @@ Welcome to your new gem! In this directory, you'll find the files you need to be
 
 TODO: Delete this and the text above, and describe your gem
 
+[![Dependency Status](https://gemnasium.com/c2e0c69e2a02b4bb66481fb32f368e0e.svg)](https://gemnasium.com/a2f4eb18c1920eb39d8e9f1f807dd830)
+
 ## Installation
 
 Add this line to your application's Gemfile:
