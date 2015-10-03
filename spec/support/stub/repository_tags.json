@@ -1,0 +1,70 @@
+[
+  {
+    "name": "v0.0.3",
+    "message": null,
+    "commit": {
+      "id": "17d7f1fc1c48ea243c30498074621e1d0b24ff9f",
+      "message": "bump version\n\n0.0.3\n",
+      "parent_ids": [
+        "6604dcfced5f97876a99f86ca20778d979e275ea"
+      ],
+      "authored_date": "2015-10-01T01:29:16.000+09:00",
+      "author_name": "sue445",
+      "author_email": "sue445@sue445.net",
+      "committed_date": "2015-10-01T01:29:18.000+09:00",
+      "committer_name": "sue445",
+      "committer_email": "sue445@sue445.net"
+    }
+  },
+  {
+    "name": "v0.0.2",
+    "message": null,
+    "commit": {
+      "id": "05fca5711469349cc30cc5df7becaaea97c386f8",
+      "message": "bump version\n",
+      "parent_ids": [
+        "c876dcfb8ee63073122855b6686eb138e4f5b245"
+      ],
+      "authored_date": "2015-10-01T01:24:40.000+09:00",
+      "author_name": "sue445",
+      "author_email": "sue445@sue445.net",
+      "committed_date": "2015-10-01T01:24:42.000+09:00",
+      "committer_name": "sue445",
+      "committer_email": "sue445@sue445.net"
+    }
+  },
+  {
+    "name": "v0.0.1",
+    "message": null,
+    "commit": {
+      "id": "50967b39efdb641a1075813c25f09c8825fa31f1",
+      "message": "0.0.1\n",
+      "parent_ids": [
+        "a3cc2e5147b51f01da913da050e8c72ae473bf25"
+      ],
+      "authored_date": "2015-10-01T01:21:37.000+09:00",
+      "author_name": "sue445",
+      "author_email": "sue445@sue445.net",
+      "committed_date": "2015-10-01T01:21:37.000+09:00",
+      "committer_name": "sue445",
+      "committer_email": "sue445@sue445.net"
+    }
+  },
+  {
+    "name": "tmp/20151014",
+    "message": null,
+    "commit": {
+      "id": "17d7f1fc1c48ea243c30498074621e1d0b24ff9f",
+      "message": "bump version\n\n0.0.3\n",
+      "parent_ids": [
+        "6604dcfced5f97876a99f86ca20778d979e275ea"
+      ],
+      "authored_date": "2015-10-01T01:29:16.000+09:00",
+      "author_name": "sue445",
+      "author_email": "sue445@sue445.net",
+      "committed_date": "2015-10-01T01:29:18.000+09:00",
+      "committer_name": "sue445",
+      "committer_email": "sue445@sue445.net"
+    }
+  }
+]
