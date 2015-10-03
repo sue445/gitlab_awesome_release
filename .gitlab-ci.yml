@@ -1,0 +1,11 @@
+stages:
+  - test
+
+job1:
+  stage: test
+  script:
+    - ./script/build.sh
+  only:
+    - master
+  tags:
+    - ruby
