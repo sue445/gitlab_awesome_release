@@ -125,4 +125,8 @@ RSpec.configure do |config|
 =end
 
   config.include StubHelper
+
+  config.before :each do
+    WebMock.disable_net_connect!(allow: "codeclimate.com")
+  end
 end
