@@ -17,8 +17,8 @@ describe GitlabAwesomeRelease::Client do
     allow(client).to receive(:project_web_url) { project_web_url }
   end
 
-  describe "#latest_tag" do
-    subject { client.latest_tag }
+  describe "#all_tag_names" do
+    subject { client.all_tag_names }
 
     before do
       stub_request(:get, "#{api_endpoint}/projects/#{escaped_project_name}/repository/tags?page=1&per_page=100").
@@ -26,7 +26,7 @@ describe GitlabAwesomeRelease::Client do
         to_return(status: 200, body: read_stub("repository_tags.json"), headers: {})
     end
 
-    it { should eq "v0.0.3" }
+    it { should eq ["v0.0.1", "v0.0.2", "v0.0.3"] }
   end
 
   describe "#merge_request_iids_between" do
@@ -58,8 +58,8 @@ describe GitlabAwesomeRelease::Client do
     it { should eq "* Add yes [!5](#{project_web_url}/merge_requests/5) *@sue445*" }
   end
 
-  describe "#changelog_summary" do
-    subject { client.changelog_summary(from, to) }
+  describe "#create_release_note" do
+    subject { client.create_release_note(from, to) }
 
     before do
       allow(client).to receive(:merge_requests_summary_between){ summary }

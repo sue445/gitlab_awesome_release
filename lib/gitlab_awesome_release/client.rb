@@ -21,22 +21,21 @@ module GitlabAwesomeRelease
       @project_web_url ||= Gitlab.project(escaped_project_name).web_url
     end
 
-    # @return [String]
-    def latest_tag
+    # all tag name order by author date
+    # @return [Array<String>]
+    def all_tag_names
       repo_tags =
         with_paging do |params|
           Gitlab.repo_tags(escaped_project_name, params)
         end
-
-      tag_names = repo_tags.map(&:name)
-      tag_names.max_by { |tag| gem_version(tag) }
+      repo_tags.sort_by{ |tag| tag.commit.authored_date }.map(&:name)
     end
 
     # generate changelog between from...to
     # @param from [String]
     # @param to   [String]
     # @return [String]
-    def changelog_summary(from, to)
+    def create_release_note(from, to)
       summary = merge_requests_summary_between(from, to)
 
       header = <<-MARKDOWN.strip_heredoc
@@ -95,14 +94,6 @@ module GitlabAwesomeRelease
       mr_iids.each_with_object("") do |iid, str|
         str << merge_request_summary(iid) + "\n"
       end
-    end
-
-    def gem_version(tag)
-      version = tag.sub(/^v/, "").strip
-      Gem::Version.create(version)
-    rescue ArgumentError
-      # ignore: Malformed version number string XXXXX
-      Gem::Version.create("0.0.0")
     end
   end
 end
