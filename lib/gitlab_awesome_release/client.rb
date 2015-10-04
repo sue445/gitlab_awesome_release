@@ -16,14 +16,15 @@ module GitlabAwesomeRelease
       @project_name = project_name
     end
 
+    # @return [String]
     def latest_tag
       repo_tags =
         with_paging do |params|
           Gitlab.repo_tags(escaped_project_name, params)
         end
 
-      version_tags = repo_tags.map(&:name)
-      version_tags.max_by { |tag| gem_version(tag) }
+      tag_names = repo_tags.map(&:name)
+      tag_names.max_by { |tag| gem_version(tag) }
     end
 
     private
@@ -32,6 +33,9 @@ module GitlabAwesomeRelease
       CGI.escape(@project_name)
     end
 
+    # @yield [params] paging block
+    # @yieldparam params [Hash] paging params for GitLab API (page: current page, per_page)
+    # @yieldreturn response in all pages
     def with_paging
       all_response = []
       page = 1
