@@ -58,8 +58,8 @@ describe GitlabAwesomeRelease::Client do
     it { should eq "* Add yes [!5](#{project_web_url}/merge_requests/5) *@sue445*" }
   end
 
-  describe "#changelog_summary" do
-    subject { client.changelog_summary(from, to) }
+  describe "#create_release_note" do
+    subject { client.create_release_note(from, to) }
 
     before do
       allow(client).to receive(:merge_requests_summary_between){ summary }

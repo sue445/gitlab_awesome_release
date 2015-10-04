@@ -36,7 +36,7 @@ module GitlabAwesomeRelease
     # @param from [String]
     # @param to   [String]
     # @return [String]
-    def changelog_summary(from, to)
+    def create_release_note(from, to)
       summary = merge_requests_summary_between(from, to)
 
       header = <<-MARKDOWN.strip_heredoc
