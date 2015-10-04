@@ -22,8 +22,8 @@ module GitlabAwesomeRelease
           Gitlab.repo_tags(escaped_project_name, params)
         end
 
-      version_tags = repo_tags.map(&:name)
-      version_tags.max_by { |tag| gem_version(tag) }
+      tag_names = repo_tags.map(&:name)
+      tag_names.max_by { |tag| gem_version(tag) }
     end
 
     private
