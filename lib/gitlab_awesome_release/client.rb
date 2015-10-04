@@ -32,6 +32,16 @@ module GitlabAwesomeRelease
       tag_names.max_by { |tag| gem_version(tag) }
     end
 
+    # all tag name order by author date
+    # @return [Array<String>]
+    def all_tag_names
+      repo_tags =
+        with_paging do |params|
+          Gitlab.repo_tags(escaped_project_name, params)
+        end
+      repo_tags.sort_by{ |tag| tag.commit.authored_date }.map(&:name)
+    end
+
     # generate changelog between from...to
     # @param from [String]
     # @param to   [String]

@@ -49,22 +49,5 @@
       "committer_name": "sue445",
       "committer_email": "sue445@sue445.net"
     }
-  },
-  {
-    "name": "tmp/20151014",
-    "message": null,
-    "commit": {
-      "id": "17d7f1fc1c48ea243c30498074621e1d0b24ff9f",
-      "message": "bump version\n\n0.0.3\n",
-      "parent_ids": [
-        "6604dcfced5f97876a99f86ca20778d979e275ea"
-      ],
-      "authored_date": "2015-10-01T01:29:16.000+09:00",
-      "author_name": "sue445",
-      "author_email": "sue445@sue445.net",
-      "committed_date": "2015-10-01T01:29:18.000+09:00",
-      "committer_name": "sue445",
-      "committer_email": "sue445@sue445.net"
-    }
   }
 ]

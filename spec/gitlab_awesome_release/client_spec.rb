@@ -29,7 +29,19 @@ describe GitlabAwesomeRelease::Client do
     it { should eq "v0.0.3" }
   end
 
-  describe "#merge_request_iids_between" do
+  describe "#all_tag_names" do
+    subject { client.all_tag_names }
+
+    before do
+      stub_request(:get, "#{api_endpoint}/projects/#{escaped_project_name}/repository/tags?page=1&per_page=100").
+        with(headers: { "Accept" => "application/json", "Private-Token" => private_token }).
+        to_return(status: 200, body: read_stub("repository_tags.json"), headers: {})
+    end
+
+    it { should eq ["v0.0.1", "v0.0.2", "v0.0.3"] }
+  end
+
+  describe "#a" do
     subject { client.merge_request_iids_between(from, to) }
 
     before do
