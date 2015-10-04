@@ -35,7 +35,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/gitlab_awesome_release.
+Bug reports and pull requests are welcome on GitHub at https://gitlab.com/sue445/gitlab_awesome_release.
 
 
 ## License

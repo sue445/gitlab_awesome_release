@@ -9,9 +9,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ["sue445"]
   spec.email         = ["sue445@sue445.net"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %q{Generate changelog from tags and MergeRequests on GitLab}
+  spec.description   = %q{Generate changelog from tags and MergeRequests on GitLab}
+  spec.homepage      = "https://gitlab.com/sue445/gitlab_awesome_release"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
