@@ -57,4 +57,33 @@ describe GitlabAwesomeRelease::Client do
 
     it { should eq "* Add yes [!5](#{project_web_url}/merge_requests/5) *@sue445*" }
   end
+
+  describe "#changelog_summary" do
+    subject { client.changelog_summary(from, to) }
+
+    before do
+      allow(client).to receive(:merge_requests_summary_between){ summary }
+    end
+
+    let(:from) { "v0.0.2" }
+    let(:to)   { "v0.0.3" }
+    let(:summary) do
+      <<-EOS.strip_heredoc
+        * Add yes [!5](#{project_web_url}/merge_requests/5) *@sue445*
+        * Add gogo [!6](#{project_web_url}/merge_requests/6) *@sue445*
+      EOS
+    end
+
+    let(:expected) do
+      <<-EOS.strip_heredoc
+        ## #{to}
+        [full changelog](#{project_web_url}/compare/#{from}...#{to})
+
+        * Add yes [!5](#{project_web_url}/merge_requests/5) *@sue445*
+        * Add gogo [!6](#{project_web_url}/merge_requests/6) *@sue445*
+      EOS
+    end
+
+    it { should eq expected }
+  end
 end

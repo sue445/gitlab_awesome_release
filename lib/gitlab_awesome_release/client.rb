@@ -1,6 +1,7 @@
 module GitlabAwesomeRelease
   require "gitlab"
   require "cgi"
+  require "active_support/all"
 
   class Client
     PER_PAGE = 100
@@ -29,6 +30,22 @@ module GitlabAwesomeRelease
 
       tag_names = repo_tags.map(&:name)
       tag_names.max_by { |tag| gem_version(tag) }
+    end
+
+    # generate changelog between from...to
+    # @param from [String]
+    # @param to   [String]
+    # @return [String]
+    def changelog_summary(from, to)
+      summary = merge_requests_summary_between(from, to)
+
+      header = <<-MARKDOWN.strip_heredoc
+        ## #{to}
+        [full changelog](#{project_web_url}/compare/#{from}...#{to})
+
+      MARKDOWN
+
+      header + summary
     end
 
     # find merge requests between from...to
@@ -70,6 +87,13 @@ module GitlabAwesomeRelease
         all_response += response
         return all_response if response.size < PER_PAGE
         page += 1
+      end
+    end
+
+    def merge_requests_summary_between(from, to)
+      mr_iids = merge_request_iids_between(from, to)
+      mr_iids.each_with_object("") do |iid, str|
+        str << merge_request_summary(iid) + "\n"
       end
     end
 
