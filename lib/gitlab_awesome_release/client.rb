@@ -27,6 +27,18 @@ module GitlabAwesomeRelease
       tag_names.max_by { |tag| gem_version(tag) }
     end
 
+    # find merge requests between from...to
+    # @param from [String]
+    # @param to   [String]
+    # @return [Array<Integer>] MergeRequest iids
+    def merge_request_iids_between(from, to)
+      commits = Gitlab.repo_compare(escaped_project_name, from, to).commits
+      commits.map do |commit|
+        commit["message"] =~ /^Merge branch .*See merge request \!(\d+)$/m
+        $1
+      end.compact.map(&:to_i)
+    end
+
     private
 
     def escaped_project_name
