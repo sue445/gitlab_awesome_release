@@ -17,18 +17,6 @@ describe GitlabAwesomeRelease::Client do
     allow(client).to receive(:project_web_url) { project_web_url }
   end
 
-  describe "#latest_tag" do
-    subject { client.latest_tag }
-
-    before do
-      stub_request(:get, "#{api_endpoint}/projects/#{escaped_project_name}/repository/tags?page=1&per_page=100").
-        with(headers: { "Accept" => "application/json", "Private-Token" => private_token }).
-        to_return(status: 200, body: read_stub("repository_tags.json"), headers: {})
-    end
-
-    it { should eq "v0.0.3" }
-  end
-
   describe "#all_tag_names" do
     subject { client.all_tag_names }
 
@@ -41,7 +29,7 @@ describe GitlabAwesomeRelease::Client do
     it { should eq ["v0.0.1", "v0.0.2", "v0.0.3"] }
   end
 
-  describe "#a" do
+  describe "#merge_request_iids_between" do
     subject { client.merge_request_iids_between(from, to) }
 
     before do
