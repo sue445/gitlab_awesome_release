@@ -11,6 +11,11 @@ describe GitlabAwesomeRelease::Client do
   let(:private_token)        { "XXXXXXXXXXXXXXXXXXX" }
   let(:project_name)         { "group/name" }
   let(:escaped_project_name) { "group%2Fname" }
+  let(:project_web_url)      { "http://example.com/#{project_name}" }
+
+  before do
+    allow(client).to receive(:project_web_url) { project_web_url }
+  end
 
   describe "#latest_tag" do
     subject { client.latest_tag }
@@ -37,5 +42,19 @@ describe GitlabAwesomeRelease::Client do
     let(:to)   { "v0.0.3" }
 
     it { should contain_exactly(5, 6) }
+  end
+
+  describe "#merge_request_summary" do
+    subject { client.merge_request_summary(iid) }
+
+    before do
+      stub_request(:get, "#{api_endpoint}/projects/#{escaped_project_name}/merge_requests?iid=#{iid}").
+        with(headers: { "Accept" => "application/json", "Private-Token" => private_token }).
+        to_return(status: 200, body: read_stub("merge_requests_with_iid.json"), headers: {})
+    end
+
+    let(:iid) { 5 }
+
+    it { should eq "* Add yes [!5](#{project_web_url}/merge_requests/5) *@sue445*" }
   end
 end

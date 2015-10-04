@@ -16,6 +16,10 @@ module GitlabAwesomeRelease
       @project_name = project_name
     end
 
+    def project_web_url
+      @project_web_url ||= Gitlab.project(escaped_project_name).web_url
+    end
+
     # @return [String]
     def latest_tag
       repo_tags =
@@ -37,6 +41,16 @@ module GitlabAwesomeRelease
         commit["message"] =~ /^Merge branch .*See merge request \!(\d+)$/m
         $1
       end.compact.map(&:to_i)
+    end
+
+    # @param iid [Integer] MergeRequest iid
+    # @return [String] markdown text
+    def merge_request_summary(iid)
+      mr = Gitlab.merge_requests(escaped_project_name, iid: iid).first
+      return nil unless mr
+
+      mr_url = "#{project_web_url}/merge_requests/#{iid}"
+      "* #{mr.title} [!#{iid}](#{mr_url}) *@#{mr.author.username}*"
     end
 
     private
