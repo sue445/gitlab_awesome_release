@@ -1,3 +1,4 @@
 #!/usr/bin/env ruby
 
-require "gitlab_awesome_release"
+require "gitlab_awesome_release/cli"
+GitlabAwesomeRelease::CLI.start(ARGV)
