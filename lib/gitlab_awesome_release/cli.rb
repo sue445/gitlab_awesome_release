@@ -23,13 +23,13 @@ module GitlabAwesomeRelease
       gitlab_api_private_token = option_or_env!(:gitlab_api_private_token)
       gitlab_project_name      = option_or_env!(:gitlab_project_name)
 
-      client = GitlabAwesomeRelease::Client.new(
+      project = GitlabAwesomeRelease::Project.new(
         api_endpoint:  gitlab_api_endpoint,
         private_token: gitlab_api_private_token,
         project_name:  gitlab_project_name,
       )
 
-      tag_names = client.all_tag_names
+      tag_names = project.all_tag_names
       oldest_tag = option_or_env(:from) || tag_names.first
       newest_tag = option_or_env(:to)   || tag_names.last
 
@@ -41,9 +41,9 @@ module GitlabAwesomeRelease
 
       release_notes = []
       tag_names[oldest_index..newest_index].each_cons(2) do |from, to|
-        release_notes << client.create_release_note(from, to)
+        release_notes << project.create_release_note(from, to)
       end
-      release_notes << client.create_release_note(newest_tag, "HEAD") if newest_tag == tag_names.last
+      release_notes << project.create_release_note(newest_tag, "HEAD") if newest_tag == tag_names.last
 
       changelog = release_notes.reverse.each_with_object("") do |release_note, str|
         str << release_note

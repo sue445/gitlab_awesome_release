@@ -3,7 +3,7 @@ module GitlabAwesomeRelease
   require "cgi"
   require "active_support/all"
 
-  class Client
+  class Project
     PER_PAGE = 100
 
     # @param api_endpoint  [String]
