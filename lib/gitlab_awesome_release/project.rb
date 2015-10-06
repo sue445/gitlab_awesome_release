@@ -3,9 +3,9 @@ module GitlabAwesomeRelease
   require "cgi"
   require "active_support/all"
 
-  using GitlabAwesomeRelease::ArrayWithinExt
-
   class Project
+    using GitlabAwesomeRelease::ArrayWithinExt
+
     PER_PAGE = 100
 
     # @param api_endpoint  [String]

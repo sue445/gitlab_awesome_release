@@ -9,7 +9,7 @@ module GitlabAwesomeRelease
       puts GitlabAwesomeRelease::VERSION
     end
 
-    desc "generate", "generate changelog"
+    desc "create_note", "generate changelog"
     option :filename
     option :from
     option :to
