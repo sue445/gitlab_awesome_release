@@ -50,15 +50,7 @@ module GitlabAwesomeRelease
         str << "\n"
       end
 
-      filename = option_or_env(:filename)
-      if filename
-        File.open(filename, "wb") do |f|
-          f.write(changelog)
-        end
-        puts "Write #{filename}"
-      else
-        puts changelog
-      end
+      write_changelog(changelog)
     end
 
     private
@@ -74,6 +66,18 @@ module GitlabAwesomeRelease
 
       puts "--#{name.to_s.gsub("_", "-")} or #{name.to_s.upcase} is either required!"
       exit!
+    end
+
+    def write_changelog(changelog)
+      filename = option_or_env(:filename)
+      if filename
+        File.open(filename, "wb") do |f|
+          f.write(changelog)
+        end
+        puts "Write #{filename}"
+      else
+        puts changelog
+      end
     end
   end
 end
