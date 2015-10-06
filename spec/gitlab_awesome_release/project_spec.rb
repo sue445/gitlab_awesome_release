@@ -11,10 +11,10 @@ describe GitlabAwesomeRelease::Project do
   let(:private_token)        { "XXXXXXXXXXXXXXXXXXX" }
   let(:project_name)         { "group/name" }
   let(:escaped_project_name) { "group%2Fname" }
-  let(:project_web_url)      { "http://example.com/#{project_name}" }
+  let(:web_url)              { "http://example.com/#{project_name}" }
 
   before do
-    allow(project).to receive(:project_web_url) { project_web_url }
+    allow(project).to receive(:web_url) { web_url }
   end
 
   describe "#all_tag_names" do
@@ -55,7 +55,7 @@ describe GitlabAwesomeRelease::Project do
 
     let(:iid) { 5 }
 
-    it { should eq "* Add yes [!5](#{project_web_url}/merge_requests/5) *@sue445*" }
+    it { should eq "* Add yes [!5](#{web_url}/merge_requests/5) *@sue445*" }
   end
 
   describe "#create_release_note" do
@@ -69,18 +69,18 @@ describe GitlabAwesomeRelease::Project do
     let(:to)   { "v0.0.3" }
     let(:summary) do
       <<-EOS.strip_heredoc
-        * Add yes [!5](#{project_web_url}/merge_requests/5) *@sue445*
-        * Add gogo [!6](#{project_web_url}/merge_requests/6) *@sue445*
+        * Add yes [!5](#{web_url}/merge_requests/5) *@sue445*
+        * Add gogo [!6](#{web_url}/merge_requests/6) *@sue445*
       EOS
     end
 
     let(:expected) do
       <<-EOS.strip_heredoc
         ## #{to}
-        [full changelog](#{project_web_url}/compare/#{from}...#{to})
+        [full changelog](#{web_url}/compare/#{from}...#{to})
 
-        * Add yes [!5](#{project_web_url}/merge_requests/5) *@sue445*
-        * Add gogo [!6](#{project_web_url}/merge_requests/6) *@sue445*
+        * Add yes [!5](#{web_url}/merge_requests/5) *@sue445*
+        * Add gogo [!6](#{web_url}/merge_requests/6) *@sue445*
       EOS
     end
 

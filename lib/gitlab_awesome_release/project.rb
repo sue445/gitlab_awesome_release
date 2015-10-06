@@ -17,8 +17,8 @@ module GitlabAwesomeRelease
       @project_name = project_name
     end
 
-    def project_web_url
-      @project_web_url ||= Gitlab.project(escaped_project_name).web_url
+    def web_url
+      @web_url ||= Gitlab.project(escaped_project_name).web_url
     end
 
     # all tag name order by author date
@@ -40,7 +40,7 @@ module GitlabAwesomeRelease
 
       header = <<-MARKDOWN.strip_heredoc
         ## #{to}
-        [full changelog](#{project_web_url}/compare/#{from}...#{to})
+        [full changelog](#{web_url}/compare/#{from}...#{to})
 
       MARKDOWN
 
@@ -65,7 +65,7 @@ module GitlabAwesomeRelease
       mr = Gitlab.merge_requests(escaped_project_name, iid: iid).first
       return nil unless mr
 
-      mr_url = "#{project_web_url}/merge_requests/#{iid}"
+      mr_url = "#{web_url}/merge_requests/#{iid}"
       "* #{mr.title} [!#{iid}](#{mr_url}) *@#{mr.author.username}*"
     end
 
