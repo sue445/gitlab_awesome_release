@@ -3,6 +3,8 @@ module GitlabAwesomeRelease
   require "cgi"
   require "active_support/all"
 
+  using GitlabAwesomeRelease::ArrayWithinExt
+
   class Project
     PER_PAGE = 100
 
@@ -24,22 +26,42 @@ module GitlabAwesomeRelease
     # all tag name order by author date
     # @return [Array<String>]
     def all_tag_names
+      return @all_tag_names if @all_tag_names
+
       repo_tags =
         with_paging do |params|
           Gitlab.repo_tags(escaped_project_name, params)
         end
-      repo_tags.sort_by{ |tag| tag.commit.authored_date }.map(&:name)
+      @all_tag_names = repo_tags.sort_by{ |tag| tag.commit.authored_date }.map(&:name)
     end
 
-    # generate changelog between from...to
-    # @param from [String]
-    # @param to   [String]
+    # @param oldest_tag [String]
+    # @param newest_tag [String]
     # @return [String]
-    def create_release_note(from, to)
+    def generate_change_log(oldest_tag, newest_tag)
+      release_notes = []
+      all_tag_names.within(oldest_tag, newest_tag).each_cons(2) do |from, to|
+        release_notes << generate_release_note(from, to)
+      end
+      release_notes << generate_release_note(newest_tag, "HEAD", title: "Unreleased") if newest_tag == all_tag_names.last
+
+      release_notes.reverse.each_with_object("") do |release_note, str|
+        str << release_note
+        str << "\n"
+      end
+    end
+
+    # generate release note between from...to
+    # @param from  [String]
+    # @param to    [String]
+    # @param title [String]
+    # @return [String]
+    def generate_release_note(from, to, title: nil)
+      title ||= to
       summary = merge_requests_summary_between(from, to)
 
       header = <<-MARKDOWN.strip_heredoc
-        ## #{to}
+        ## #{title}
         [full changelog](#{web_url}/compare/#{from}...#{to})
 
       MARKDOWN

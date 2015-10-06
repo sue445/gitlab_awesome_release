@@ -58,8 +58,8 @@ describe GitlabAwesomeRelease::Project do
     it { should eq "* Add yes [!5](#{web_url}/merge_requests/5) *@sue445*" }
   end
 
-  describe "#create_release_note" do
-    subject { project.create_release_note(from, to) }
+  describe "#generate_release_note" do
+    subject { project.generate_release_note(from, to) }
 
     before do
       allow(project).to receive(:merge_requests_summary_between){ summary }
