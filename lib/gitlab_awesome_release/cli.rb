@@ -4,6 +4,8 @@ require "dotenv"
 
 module GitlabAwesomeRelease
   class CLI < Thor
+    using GitlabAwesomeRelease::ArrayWithinExt
+
     desc "version", "Show gitlab_awesome_release version"
     def version
       puts GitlabAwesomeRelease::VERSION
@@ -33,14 +35,8 @@ module GitlabAwesomeRelease
       oldest_tag = option_or_env(:from) || tag_names.first
       newest_tag = option_or_env(:to)   || tag_names.last
 
-      raise "Unknown tag: #{oldest_tag}" unless tag_names.include?(oldest_tag)
-      raise "Unknown tag: #{newest_tag}" unless tag_names.include?(newest_tag)
-
-      oldest_index = tag_names.find_index(oldest_tag)
-      newest_index = tag_names.find_index(newest_tag)
-
       release_notes = []
-      tag_names[oldest_index..newest_index].each_cons(2) do |from, to|
+      tag_names.within(oldest_tag, newest_tag).each_cons(2) do |from, to|
         release_notes << project.create_release_note(from, to)
       end
       release_notes << project.create_release_note(newest_tag, "HEAD") if newest_tag == tag_names.last
