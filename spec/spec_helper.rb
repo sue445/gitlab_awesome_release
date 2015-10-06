@@ -10,6 +10,7 @@ end
 
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require "gitlab_awesome_release"
+require "gitlab_awesome_release/cli"
 require "dotenv"
 require "pry"
 require "webmock/rspec"
