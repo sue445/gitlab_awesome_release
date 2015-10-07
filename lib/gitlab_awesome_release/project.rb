@@ -1,7 +1,5 @@
 module GitlabAwesomeRelease
-  require "gitlab"
   require "cgi"
-  require "active_support/all"
 
   class Project
     using GitlabAwesomeRelease::ArrayWithinExt
