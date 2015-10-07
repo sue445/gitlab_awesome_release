@@ -7,6 +7,10 @@ TODO: Delete this and the text above, and describe your gem
 [![build status](https://gitlab.com/ci/projects/9759/status.png?ref=master)](https://gitlab.com/ci/projects/9759?ref=master)
 [![Dependency Status](https://gemnasium.com/c2e0c69e2a02b4bb66481fb32f368e0e.svg)](https://gemnasium.com/a2f4eb18c1920eb39d8e9f1f807dd830)
 
+## Requirements
+
+* Ruby 2.1+
+
 ## Installation
 
 Add this line to your application's Gemfile:
