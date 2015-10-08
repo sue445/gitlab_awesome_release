@@ -1,5 +1,6 @@
 module GitlabAwesomeRelease
   require "cgi"
+  require "gitlab_awesome_release/array_within_ext"
 
   class Project
     using GitlabAwesomeRelease::ArrayWithinExt
