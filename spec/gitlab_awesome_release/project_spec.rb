@@ -1,9 +1,10 @@
 describe GitlabAwesomeRelease::Project do
   let(:project) do
     GitlabAwesomeRelease::Project.new(
-      api_endpoint:  api_endpoint,
-      private_token: private_token,
-      project_name:  project_name,
+      api_endpoint:     api_endpoint,
+      private_token:    private_token,
+      project_name:     project_name,
+      allow_tag_format: allow_tag_format,
     )
   end
 
@@ -12,6 +13,7 @@ describe GitlabAwesomeRelease::Project do
   let(:project_name)         { "group/name" }
   let(:escaped_project_name) { "group%2Fname" }
   let(:web_url)              { "http://example.com/#{project_name}" }
+  let(:allow_tag_format)     { /^v?[\d.]+/ }
 
   before do
     allow(project).to receive(:web_url) { web_url }
@@ -162,5 +164,17 @@ describe GitlabAwesomeRelease::Project do
 
       EOS
     end
+  end
+
+  describe "#release_tag_names" do
+    subject { project.release_tag_names }
+
+    before do
+      allow(project).to receive(:all_tag_names) { %w(v0.0.1 0.0.2 tmp v0.0.3.beta1 v0.0.3) }
+    end
+
+    let(:allow_tag_format)     { /^v?[\d.]+/ }
+
+    it { should eq %w(v0.0.1 0.0.2 v0.0.3.beta1 v0.0.3) }
   end
 end

@@ -7,15 +7,17 @@ module GitlabAwesomeRelease
 
     PER_PAGE = 100
 
-    # @param api_endpoint  [String]
-    # @param private_token [String]
-    # @param project_name  [String]
-    def initialize(api_endpoint:, private_token:, project_name:)
+    # @param api_endpoint     [String]
+    # @param private_token    [String]
+    # @param project_name     [String]
+    # @param allow_tag_format [Regexp]
+    def initialize(api_endpoint:, private_token:, project_name:, allow_tag_format:)
       Gitlab.configure do |config|
         config.endpoint      = api_endpoint
         config.private_token = private_token
       end
       @project_name = project_name
+      @allow_tag_format = allow_tag_format
     end
 
     def web_url
@@ -32,6 +34,11 @@ module GitlabAwesomeRelease
           Gitlab.repo_tags(escaped_project_name, params)
         end
       @all_tag_names = repo_tags.sort_by{ |tag| tag.commit.authored_date }.map(&:name)
+    end
+
+    # @return [Array<String>]
+    def release_tag_names
+      all_tag_names.find_all { |tag| tag =~ @allow_tag_format }
     end
 
     # @param oldest_tag [String]
