@@ -22,7 +22,7 @@ module GitlabAwesomeRelease
       @web_url ||= Gitlab.project(escaped_project_name).web_url
     end
 
-    # all tag name order by author date
+    # all tag names order by author date
     # @return [Array<String>]
     def all_tag_names
       return @all_tag_names if @all_tag_names
