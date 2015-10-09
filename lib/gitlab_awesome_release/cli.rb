@@ -18,8 +18,8 @@ module GitlabAwesomeRelease
     option :gitlab_api_endpoint
     option :gitlab_api_private_token
     option :gitlab_project_name
-    option :allow_tag_format, default: "^v?[\\d.]+"
-    option :log_level, default: "info"
+    option :allow_tag_format, desc: "Regular expression of tag format", default: "^v?[\\d.]+"
+    option :log_level, desc: "Log level (debug|info|warn|error|fatal|unknown)", default: "info"
     def create_note
       Dotenv.load
 
