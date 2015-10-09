@@ -46,7 +46,7 @@ module GitlabAwesomeRelease
     # @return [String]
     def generate_change_log(oldest_tag, newest_tag)
       release_notes = []
-      all_tag_names.within(oldest_tag, newest_tag).each_cons(2) do |from, to|
+      release_tag_names.within(oldest_tag, newest_tag).each_cons(2) do |from, to|
         release_notes << generate_release_note(from, to)
       end
       release_notes << generate_release_note(newest_tag, "HEAD", title: "Unreleased") if newest_tag == all_tag_names.last

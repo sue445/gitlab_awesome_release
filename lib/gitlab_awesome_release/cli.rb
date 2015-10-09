@@ -29,7 +29,7 @@ module GitlabAwesomeRelease
         project_name:  gitlab_project_name,
       )
 
-      tag_names = project.all_tag_names
+      tag_names = project.release_tag_names
       oldest_tag = option_or_env(:from) || tag_names.first
       newest_tag = option_or_env(:to)   || tag_names.last
 
