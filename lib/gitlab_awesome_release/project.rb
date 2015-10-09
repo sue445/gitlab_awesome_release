@@ -11,13 +11,14 @@ module GitlabAwesomeRelease
     # @param private_token    [String]
     # @param project_name     [String]
     # @param allow_tag_format [Regexp]
-    def initialize(api_endpoint:, private_token:, project_name:, allow_tag_format:)
+    def initialize(api_endpoint:, private_token:, project_name:, allow_tag_format:, logger:)
       Gitlab.configure do |config|
         config.endpoint      = api_endpoint
         config.private_token = private_token
       end
       @project_name = project_name
       @allow_tag_format = allow_tag_format
+      @logger = logger
     end
 
     def web_url
@@ -29,6 +30,7 @@ module GitlabAwesomeRelease
     def all_tag_names
       return @all_tag_names if @all_tag_names
 
+      @logger.info "fetch git tags"
       repo_tags =
         with_paging do |params|
           Gitlab.repo_tags(escaped_project_name, params)
@@ -63,6 +65,8 @@ module GitlabAwesomeRelease
     # @param title [String]
     # @return [String]
     def generate_release_note(from, to, title: nil)
+      @logger.info "generate release note (#{from}...#{to})"
+
       title ||= to
       summary = merge_requests_summary_between(from, to)
 
