@@ -7,22 +7,24 @@ module GitlabAwesomeRelease
 
     PER_PAGE = 100
 
-    # @param api_endpoint  [String]
-    # @param private_token [String]
-    # @param project_name  [String]
-    def initialize(api_endpoint:, private_token:, project_name:)
+    # @param api_endpoint     [String]
+    # @param private_token    [String]
+    # @param project_name     [String]
+    # @param allow_tag_format [Regexp]
+    def initialize(api_endpoint:, private_token:, project_name:, allow_tag_format:)
       Gitlab.configure do |config|
         config.endpoint      = api_endpoint
         config.private_token = private_token
       end
       @project_name = project_name
+      @allow_tag_format = allow_tag_format
     end
 
     def web_url
       @web_url ||= Gitlab.project(escaped_project_name).web_url
     end
 
-    # all tag name order by author date
+    # all tag names order by author date
     # @return [Array<String>]
     def all_tag_names
       return @all_tag_names if @all_tag_names
@@ -34,12 +36,17 @@ module GitlabAwesomeRelease
       @all_tag_names = repo_tags.sort_by{ |tag| tag.commit.authored_date }.map(&:name)
     end
 
+    # @return [Array<String>]
+    def release_tag_names
+      all_tag_names.find_all { |tag| tag =~ @allow_tag_format }
+    end
+
     # @param oldest_tag [String]
     # @param newest_tag [String]
     # @return [String]
     def generate_change_log(oldest_tag, newest_tag)
       release_notes = []
-      all_tag_names.within(oldest_tag, newest_tag).each_cons(2) do |from, to|
+      release_tag_names.within(oldest_tag, newest_tag).each_cons(2) do |from, to|
         release_notes << generate_release_note(from, to)
       end
       release_notes << generate_release_note(newest_tag, "HEAD", title: "Unreleased") if newest_tag == all_tag_names.last

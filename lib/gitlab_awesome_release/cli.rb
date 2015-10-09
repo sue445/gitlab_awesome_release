@@ -4,6 +4,8 @@ require "dotenv"
 
 module GitlabAwesomeRelease
   class CLI < Thor
+    DEFAULT_VERSION_FORMAT = "^v?[\\d.]+"
+
     desc "version", "Show gitlab_awesome_release version"
     def version
       puts GitlabAwesomeRelease::VERSION
@@ -16,20 +18,23 @@ module GitlabAwesomeRelease
     option :gitlab_api_endpoint
     option :gitlab_api_private_token
     option :gitlab_project_name
+    option :allow_tag_format, default: "^v?[\\d.]+"
     def create_note
       Dotenv.load
 
       gitlab_api_endpoint      = option_or_env!(:gitlab_api_endpoint)
       gitlab_api_private_token = option_or_env!(:gitlab_api_private_token)
       gitlab_project_name      = option_or_env!(:gitlab_project_name)
+      allow_tag_format         = option_or_env(:allow_tag_format, DEFAULT_VERSION_FORMAT)
 
       project = GitlabAwesomeRelease::Project.new(
-        api_endpoint:  gitlab_api_endpoint,
-        private_token: gitlab_api_private_token,
-        project_name:  gitlab_project_name,
+        api_endpoint:     gitlab_api_endpoint,
+        private_token:    gitlab_api_private_token,
+        project_name:     gitlab_project_name,
+        allow_tag_format: /#{allow_tag_format}/
       )
 
-      tag_names = project.all_tag_names
+      tag_names = project.release_tag_names
       oldest_tag = option_or_env(:from) || tag_names.first
       newest_tag = option_or_env(:to)   || tag_names.last
 
@@ -40,9 +45,9 @@ module GitlabAwesomeRelease
 
     private
 
-    def option_or_env(name)
+    def option_or_env(name, default = nil)
       upper_name = name.to_s.upcase
-      options[name].presence || ENV[upper_name].presence
+      options[name].presence || ENV[upper_name].presence || default
     end
 
     def option_or_env!(name)
