@@ -18,7 +18,8 @@ module GitlabAwesomeRelease
     option :gitlab_api_endpoint
     option :gitlab_api_private_token
     option :gitlab_project_name
-    option :allow_tag_format, default: "^v?[\\d.]+"
+    option :allow_tag_format, desc: "Regular expression of tag format", default: "^v?[\\d.]+"
+    option :log_level, desc: "Log level (debug|info|warn|error|fatal|unknown)", default: "info"
     def create_note
       Dotenv.load
 
@@ -27,11 +28,18 @@ module GitlabAwesomeRelease
       gitlab_project_name      = option_or_env!(:gitlab_project_name)
       allow_tag_format         = option_or_env(:allow_tag_format, DEFAULT_VERSION_FORMAT)
 
+      @logger = Logger.new(STDOUT)
+      @logger.level = logger_level(option_or_env(:log_level))
+      @logger.formatter = proc{ |severity, datetime, progname, message|
+        "[#{datetime}] #{message}\n"
+      }
+
       project = GitlabAwesomeRelease::Project.new(
         api_endpoint:     gitlab_api_endpoint,
         private_token:    gitlab_api_private_token,
         project_name:     gitlab_project_name,
-        allow_tag_format: /#{allow_tag_format}/
+        allow_tag_format: /#{allow_tag_format}/,
+        logger:           @logger,
       )
 
       tag_names = project.release_tag_names
@@ -41,6 +49,7 @@ module GitlabAwesomeRelease
       changelog = project.generate_change_log(oldest_tag, newest_tag)
 
       write_changelog(changelog)
+      @logger.info "finish!"
     end
 
     private
@@ -64,9 +73,28 @@ module GitlabAwesomeRelease
         File.open(filename, "wb") do |f|
           f.write(changelog)
         end
-        puts "Write #{filename}"
+        @logger.info "Write to #{filename}"
       else
         puts changelog
+      end
+    end
+
+    def logger_level(log_level)
+      case log_level.to_sym
+      when :debug
+        Logger::DEBUG
+      when :error
+        Logger::ERROR
+      when :fatal
+        Logger::FATAL
+      when :info
+        Logger::INFO
+      when :unknown
+        Logger::UNKNOWN
+      when :warn
+        Logger::WARN
+      else
+        raise "Unknown log_level: #{log_level}"
       end
     end
   end

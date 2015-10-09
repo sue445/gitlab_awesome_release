@@ -5,6 +5,7 @@ describe GitlabAwesomeRelease::Project do
       private_token:    private_token,
       project_name:     project_name,
       allow_tag_format: allow_tag_format,
+      logger:           logger,
     )
   end
 
@@ -14,6 +15,11 @@ describe GitlabAwesomeRelease::Project do
   let(:escaped_project_name) { "group%2Fname" }
   let(:web_url)              { "http://example.com/#{project_name}" }
   let(:allow_tag_format)     { /^v?[\d.]+/ }
+  let(:logger) do
+    _logger = Logger.new(STDOUT)
+    _logger.level = Logger::DEBUG
+    _logger
+  end
 
   before do
     allow(project).to receive(:web_url) { web_url }
