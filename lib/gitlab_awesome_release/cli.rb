@@ -6,6 +6,8 @@ module GitlabAwesomeRelease
   class CLI < Thor
     DEFAULT_VERSION_FORMAT = "^v?[\\d.]+"
 
+    GITLAB_ENV_FILES = %w(.env.gitlab ~/.env.gitlab)
+
     desc "version", "Show gitlab_awesome_release version"
     def version
       puts GitlabAwesomeRelease::VERSION
@@ -21,7 +23,7 @@ module GitlabAwesomeRelease
     option :allow_tag_format, desc: "Regular expression of tag format", default: "^v?[\\d.]+"
     option :log_level, desc: "Log level (debug|info|warn|error|fatal|unknown)", default: "info"
     def create_note
-      Dotenv.load
+      Dotenv.load(*GITLAB_ENV_FILES)
 
       gitlab_api_endpoint      = option_or_env!(:gitlab_api_endpoint)
       gitlab_api_private_token = option_or_env!(:gitlab_api_private_token)
