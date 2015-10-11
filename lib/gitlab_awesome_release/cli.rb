@@ -54,6 +54,45 @@ module GitlabAwesomeRelease
       @logger.info "finish!"
     end
 
+    desc "marking", "Add version label to MergeRequests"
+    option :from
+    option :to
+    option :label
+    option :gitlab_api_endpoint
+    option :gitlab_api_private_token
+    option :gitlab_project_name
+    option :log_level, desc: "Log level (debug|info|warn|error|fatal|unknown)", default: "info"
+    def marking
+      Dotenv.load(*GITLAB_ENV_FILES)
+
+      from  = option_or_env!(:from)
+      to    = option_or_env!(:to)
+      label = option_or_env(:label) || to
+      gitlab_api_endpoint      = option_or_env!(:gitlab_api_endpoint)
+      gitlab_api_private_token = option_or_env!(:gitlab_api_private_token)
+      gitlab_project_name      = option_or_env!(:gitlab_project_name)
+
+      @logger = Logger.new(STDOUT)
+      @logger.level = logger_level(option_or_env(:log_level))
+      @logger.formatter = proc{ |severity, datetime, progname, message|
+        "[#{datetime}] #{message}\n"
+      }
+
+      project = GitlabAwesomeRelease::Project.new(
+        api_endpoint:     gitlab_api_endpoint,
+        private_token:    gitlab_api_private_token,
+        project_name:     gitlab_project_name,
+        allow_tag_format: /#{DEFAULT_VERSION_FORMAT}/,
+        logger:           @logger,
+      )
+
+      project.merge_request_iids_between(from, to).each do |iid|
+        mr = project.merge_request(iid)
+        project.add_merge_request_label(mr, label) if mr
+      end
+      @logger.info "finish!"
+    end
+
     private
 
     def option_or_env(name, default = nil)
