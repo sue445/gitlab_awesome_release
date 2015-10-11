@@ -17,7 +17,7 @@ describe GitlabAwesomeRelease::Project do
   let(:allow_tag_format)     { /^v?[\d.]+/ }
   let(:logger) do
     _logger = Logger.new(STDOUT)
-    _logger.level = Logger::DEBUG
+    _logger.level = Logger::ERROR
     _logger
   end
 

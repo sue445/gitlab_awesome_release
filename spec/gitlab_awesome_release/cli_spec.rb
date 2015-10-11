@@ -11,6 +11,7 @@ describe GitlabAwesomeRelease::CLI do
           gitlab_api_endpoint:      api_endpoint,
           gitlab_api_private_token: private_token,
           gitlab_project_name:      project_name,
+          log_level: log_level,
         }
       )
     end
@@ -23,6 +24,7 @@ describe GitlabAwesomeRelease::CLI do
     let(:project_name)         { "group/name" }
     let(:escaped_project_name) { "group%2Fname" }
     let(:web_url)              { "http://example.com/#{project_name}" }
+    let(:log_level)            { "error" }
 
     before do
       # ignore dotenv
