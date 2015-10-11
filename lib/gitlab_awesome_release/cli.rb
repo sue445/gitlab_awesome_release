@@ -34,7 +34,7 @@ module GitlabAwesomeRelease
       changelog = project.generate_change_log(oldest_tag, newest_tag)
 
       write_changelog(changelog)
-      project.logger.info "finish!"
+      @logger.info "finish!"
     end
 
     desc "marking", "Add version label to MergeRequests"
@@ -58,7 +58,7 @@ module GitlabAwesomeRelease
         mr = project.merge_request(iid)
         project.add_merge_request_label(mr, label) if mr
       end
-      project.logger.info "finish!"
+      @logger.info "finish!"
     end
 
     private
@@ -82,9 +82,9 @@ module GitlabAwesomeRelease
       gitlab_project_name      = option_or_env!(:gitlab_project_name)
       allow_tag_format         = option_or_env(:allow_tag_format, DEFAULT_VERSION_FORMAT)
 
-      logger = Logger.new(STDOUT)
-      logger.level = logger_level(option_or_env(:log_level))
-      logger.formatter = proc{ |severity, datetime, progname, message|
+      @logger = Logger.new(STDOUT)
+      @logger.level = logger_level(option_or_env(:log_level))
+      @logger.formatter = proc{ |severity, datetime, progname, message|
         "[#{datetime}] #{message}\n"
       }
 
@@ -93,7 +93,7 @@ module GitlabAwesomeRelease
         private_token:    gitlab_api_private_token,
         project_name:     gitlab_project_name,
         allow_tag_format: /#{allow_tag_format}/,
-        logger:           logger,
+        logger:           @logger,
       )
     end
 
