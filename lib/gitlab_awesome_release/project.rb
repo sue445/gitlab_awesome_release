@@ -5,6 +5,8 @@ module GitlabAwesomeRelease
   class Project
     using GitlabAwesomeRelease::ArrayWithinExt
 
+    attr_reader :logger
+
     PER_PAGE = 100
 
     # @param api_endpoint     [String]
