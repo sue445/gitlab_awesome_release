@@ -5,6 +5,8 @@ module GitlabAwesomeRelease
   class Project
     using GitlabAwesomeRelease::ArrayWithinExt
 
+    attr_reader :logger
+
     PER_PAGE = 100
 
     # @param api_endpoint     [String]
@@ -94,11 +96,20 @@ module GitlabAwesomeRelease
     # @param iid [Integer] MergeRequest iid
     # @return [String] markdown text
     def merge_request_summary(iid)
-      mr = Gitlab.merge_requests(escaped_project_name, iid: iid).first
+      mr = merge_request(iid)
       return nil unless mr
 
       mr_url = "#{web_url}/merge_requests/#{iid}"
       "* #{mr.title} [!#{iid}](#{mr_url}) *@#{mr.author.username}*"
+    end
+
+    def merge_request(iid)
+      Gitlab.merge_requests(escaped_project_name, iid: iid).first
+    end
+
+    def add_merge_request_label(mr, label)
+      Gitlab.update_merge_request(escaped_project_name, mr.id, labels: label)
+      @logger.info "Add [#{label}] to !#{mr.iid}"
     end
 
     private

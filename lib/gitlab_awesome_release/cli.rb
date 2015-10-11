@@ -5,8 +5,8 @@ require "dotenv"
 module GitlabAwesomeRelease
   class CLI < Thor
     DEFAULT_VERSION_FORMAT = "^v?[\\d.]+"
-
     GITLAB_ENV_FILES = %w(.env.gitlab ~/.env.gitlab)
+    LOG_LEVEL_DESCRIPTION = "Log level (debug|info|warn|error|fatal|unknown)"
 
     desc "version", "Show gitlab_awesome_release version"
     def version
@@ -21,28 +21,11 @@ module GitlabAwesomeRelease
     option :gitlab_api_private_token
     option :gitlab_project_name
     option :allow_tag_format, desc: "Regular expression of tag format", default: DEFAULT_VERSION_FORMAT
-    option :log_level, desc: "Log level (debug|info|warn|error|fatal|unknown)", default: "info"
+    option :log_level, desc: LOG_LEVEL_DESCRIPTION, default: "info"
     def create_note
       Dotenv.load(*GITLAB_ENV_FILES)
 
-      gitlab_api_endpoint      = option_or_env!(:gitlab_api_endpoint)
-      gitlab_api_private_token = option_or_env!(:gitlab_api_private_token)
-      gitlab_project_name      = option_or_env!(:gitlab_project_name)
-      allow_tag_format         = option_or_env(:allow_tag_format, DEFAULT_VERSION_FORMAT)
-
-      @logger = Logger.new(STDOUT)
-      @logger.level = logger_level(option_or_env(:log_level))
-      @logger.formatter = proc{ |severity, datetime, progname, message|
-        "[#{datetime}] #{message}\n"
-      }
-
-      project = GitlabAwesomeRelease::Project.new(
-        api_endpoint:     gitlab_api_endpoint,
-        private_token:    gitlab_api_private_token,
-        project_name:     gitlab_project_name,
-        allow_tag_format: /#{allow_tag_format}/,
-        logger:           @logger,
-      )
+      project = create_project
 
       tag_names = project.release_tag_names
       oldest_tag = option_or_env(:from) || tag_names.first
@@ -51,7 +34,31 @@ module GitlabAwesomeRelease
       changelog = project.generate_change_log(oldest_tag, newest_tag)
 
       write_changelog(changelog)
-      @logger.info "finish!"
+      project.logger.info "finish!"
+    end
+
+    desc "marking", "Add version label to MergeRequests"
+    option :from
+    option :to
+    option :label
+    option :gitlab_api_endpoint
+    option :gitlab_api_private_token
+    option :gitlab_project_name
+    option :log_level, desc: LOG_LEVEL_DESCRIPTION, default: "info"
+    def marking
+      Dotenv.load(*GITLAB_ENV_FILES)
+
+      from  = option_or_env!(:from)
+      to    = option_or_env!(:to)
+      label = option_or_env(:label) || to
+
+      project = create_project
+
+      project.merge_request_iids_between(from, to).each do |iid|
+        mr = project.merge_request(iid)
+        project.add_merge_request_label(mr, label) if mr
+      end
+      project.logger.info "finish!"
     end
 
     private
@@ -67,6 +74,27 @@ module GitlabAwesomeRelease
 
       puts "--#{name.to_s.gsub("_", "-")} or #{name.to_s.upcase} is either required!"
       exit!
+    end
+
+    def create_project
+      gitlab_api_endpoint      = option_or_env!(:gitlab_api_endpoint)
+      gitlab_api_private_token = option_or_env!(:gitlab_api_private_token)
+      gitlab_project_name      = option_or_env!(:gitlab_project_name)
+      allow_tag_format         = option_or_env(:allow_tag_format, DEFAULT_VERSION_FORMAT)
+
+      logger = Logger.new(STDOUT)
+      logger.level = logger_level(option_or_env(:log_level))
+      logger.formatter = proc{ |severity, datetime, progname, message|
+        "[#{datetime}] #{message}\n"
+      }
+
+      GitlabAwesomeRelease::Project.new(
+        api_endpoint:     gitlab_api_endpoint,
+        private_token:    gitlab_api_private_token,
+        project_name:     gitlab_project_name,
+        allow_tag_format: /#{allow_tag_format}/,
+        logger:           logger,
+      )
     end
 
     def write_changelog(changelog)
