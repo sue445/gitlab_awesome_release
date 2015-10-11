@@ -14,6 +14,7 @@ require "gitlab_awesome_release/cli"
 require "dotenv"
 require "pry"
 require "webmock/rspec"
+require "rspec/temp_dir"
 
 Dir["#{__dir__}/support/**/*.rb"].each { |f| require f }
 

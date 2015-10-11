@@ -62,6 +62,17 @@ describe GitlabAwesomeRelease::CLI do
         subject
       end
     end
+
+    context "When exists filename" do
+      include_context "uses temp dir"
+
+      let(:filename) { temp_dir_path.join("CHANGELOG.md") }
+
+      it "should be create CHANGELOG.md" do
+        subject
+        expect(filename.size).to be > 0
+      end
+    end
   end
 
   describe "#marking" do
