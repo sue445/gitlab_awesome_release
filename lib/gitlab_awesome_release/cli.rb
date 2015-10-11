@@ -15,8 +15,8 @@ module GitlabAwesomeRelease
 
     desc "create_note", "generate changelog"
     option :filename
-    option :from
-    option :to
+    option :from_tag
+    option :to_tag
     option :gitlab_api_endpoint
     option :gitlab_api_private_token
     option :gitlab_project_name
@@ -28,18 +28,18 @@ module GitlabAwesomeRelease
       project = create_project
 
       tag_names = project.release_tag_names
-      oldest_tag = option_or_env(:from) || tag_names.first
-      newest_tag = option_or_env(:to)   || tag_names.last
+      oldest_tag = option_or_env(:from_tag) || tag_names.first
+      newest_tag = option_or_env(:to_tag)   || tag_names.last
 
       changelog = project.generate_change_log(oldest_tag, newest_tag)
 
       write_changelog(changelog)
-      project.logger.info "finish!"
+      @logger.info "finish!"
     end
 
     desc "marking", "Add version label to MergeRequests"
-    option :from
-    option :to
+    option :from_tag
+    option :to_tag
     option :label
     option :gitlab_api_endpoint
     option :gitlab_api_private_token
@@ -48,17 +48,17 @@ module GitlabAwesomeRelease
     def marking
       Dotenv.load(*GITLAB_ENV_FILES)
 
-      from  = option_or_env!(:from)
-      to    = option_or_env!(:to)
-      label = option_or_env(:label) || to
+      from_tag  = option_or_env!(:from_tag)
+      to_tag    = option_or_env!(:to_tag)
+      label     = option_or_env(:label) || to_tag
 
       project = create_project
 
-      project.merge_request_iids_between(from, to).each do |iid|
+      project.merge_request_iids_between(from_tag, to_tag).each do |iid|
         mr = project.merge_request(iid)
         project.add_merge_request_label(mr, label) if mr
       end
-      project.logger.info "finish!"
+      @logger.info "finish!"
     end
 
     private
@@ -82,9 +82,9 @@ module GitlabAwesomeRelease
       gitlab_project_name      = option_or_env!(:gitlab_project_name)
       allow_tag_format         = option_or_env(:allow_tag_format, DEFAULT_VERSION_FORMAT)
 
-      logger = Logger.new(STDOUT)
-      logger.level = logger_level(option_or_env(:log_level))
-      logger.formatter = proc{ |severity, datetime, progname, message|
+      @logger = Logger.new(STDOUT)
+      @logger.level = logger_level(option_or_env(:log_level))
+      @logger.formatter = proc{ |severity, datetime, progname, message|
         "[#{datetime}] #{message}\n"
       }
 
@@ -93,7 +93,7 @@ module GitlabAwesomeRelease
         private_token:    gitlab_api_private_token,
         project_name:     gitlab_project_name,
         allow_tag_format: /#{allow_tag_format}/,
-        logger:           logger,
+        logger:           @logger,
       )
     end
 

@@ -6,8 +6,8 @@ describe GitlabAwesomeRelease::CLI do
         [],
         {
           filename: filename,
-          from:     from,
-          to:       to,
+          from_tag: from_tag,
+          to_tag:   to_tag,
           gitlab_api_endpoint:      api_endpoint,
           gitlab_api_private_token: private_token,
           gitlab_project_name:      project_name,
@@ -17,8 +17,8 @@ describe GitlabAwesomeRelease::CLI do
     end
 
     let(:filename) { nil }
-    let(:from)     { nil }
-    let(:to)       { nil }
+    let(:from_tag) { nil }
+    let(:to_tag)   { nil }
     let(:api_endpoint)         { "http://example.com/api/v3" }
     let(:private_token)        { "XXXXXXXXXXXXXXXXXXX" }
     let(:project_name)         { "group/name" }
@@ -45,21 +45,32 @@ describe GitlabAwesomeRelease::CLI do
         to_return(status: 200, body: read_stub("merge_requests_with_iid.json"), headers: {})
     end
 
-    context "When both 'from' and 'to' are empty" do
-      let(:from) { nil }
-      let(:to)   { nil }
+    context "When both 'from_tag' and 'to_tag' are empty" do
+      let(:from_tag) { nil }
+      let(:to_tag)   { nil }
 
       it "should be successful" do
         subject
       end
     end
 
-    context "When both 'from' and 'to' have value" do
-      let(:from) { "v0.0.1" }
-      let(:to)   { "v0.0.2" }
+    context "When both 'from_tag' and 'to_tag' have value" do
+      let(:from_tag) { "v0.0.1" }
+      let(:to_tag)   { "v0.0.2" }
 
       it "should be successful" do
         subject
+      end
+    end
+
+    context "When exists filename" do
+      include_context "uses temp dir"
+
+      let(:filename) { temp_dir_path.join("CHANGELOG.md") }
+
+      it "should be create CHANGELOG.md" do
+        subject
+        expect(filename.size).to be > 0
       end
     end
   end
@@ -70,8 +81,8 @@ describe GitlabAwesomeRelease::CLI do
         :marking,
         [],
         {
-          from:     from,
-          to:       to,
+          from_tag: from_tag,
+          to_tag:   to_tag,
           label:    label,
           gitlab_api_endpoint:      api_endpoint,
           gitlab_api_private_token: private_token,
@@ -81,8 +92,8 @@ describe GitlabAwesomeRelease::CLI do
       )
     end
 
-    let(:from)     { "v0.0.1" }
-    let(:to)       { "v0.0.2" }
+    let(:from_tag) { "v0.0.1" }
+    let(:to_tag)   { "v0.0.2" }
     let(:label)    { "ver0.0.2" }
     let(:api_endpoint)         { "http://example.com/api/v3" }
     let(:private_token)        { "XXXXXXXXXXXXXXXXXXX" }
