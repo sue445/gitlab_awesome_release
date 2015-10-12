@@ -14,12 +14,12 @@ module GitlabAwesomeRelease
     end
 
     desc "create_note", "generate changelog"
-    option :filename
-    option :from_tag
-    option :to_tag
     option :gitlab_api_endpoint
     option :gitlab_api_private_token
     option :gitlab_project_name
+    option :from_tag
+    option :to_tag
+    option :filename
     option :allow_tag_format, desc: "Regular expression of tag format", default: DEFAULT_VERSION_FORMAT
     option :log_level, desc: LOG_LEVEL_DESCRIPTION, default: "info"
     def create_note
@@ -38,12 +38,12 @@ module GitlabAwesomeRelease
     end
 
     desc "marking", "Add version label to MergeRequests"
-    option :from_tag
-    option :to_tag
-    option :label
     option :gitlab_api_endpoint
     option :gitlab_api_private_token
     option :gitlab_project_name
+    option :from_tag
+    option :to_tag
+    option :label
     option :log_level, desc: LOG_LEVEL_DESCRIPTION, default: "info"
     def marking
       Dotenv.load(*GITLAB_ENV_FILES)
