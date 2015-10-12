@@ -1,4 +1,9 @@
 describe GitlabAwesomeRelease::CLI do
+  before do
+    # Ignore assert_merge_request_iid because stub always return same response
+    allow_any_instance_of(GitlabAwesomeRelease::Project).to receive(:assert_merge_request_iid)
+  end
+
   describe "#create_note" do
     subject do
       GitlabAwesomeRelease::CLI.new.invoke(
