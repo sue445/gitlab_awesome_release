@@ -1,6 +1,12 @@
 ## Unreleased
-[full changelog](https://gitlab.com/sue445/gitlab_awesome_release/compare/v0.1.0.beta5...HEAD)
+[full changelog](https://gitlab.com/sue445/gitlab_awesome_release/compare/v0.1.0.beta6...HEAD)
 
+
+## v0.1.0.beta6
+[full changelog](https://gitlab.com/sue445/gitlab_awesome_release/compare/v0.1.0.beta5...v0.1.0.beta6)
+
+* Add MR iid check [!12](https://gitlab.com/sue445/gitlab_awesome_release/merge_requests/12) *@sue445*
+* Write document [!13](https://gitlab.com/sue445/gitlab_awesome_release/merge_requests/13) *@sue445*
 
 ## v0.1.0.beta5
 [full changelog](https://gitlab.com/sue445/gitlab_awesome_release/compare/v0.1.0.beta4...v0.1.0.beta5)
