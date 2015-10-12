@@ -1,16 +1,17 @@
 # GitlabAwesomeRelease
-
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/gitlab_awesome_release`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Generate changelog from tags and MergeRequests on [GitLab](https://about.gitlab.com/)
 
 [![Gem Version](https://badge.fury.io/rb/gitlab_awesome_release.svg)](https://badge.fury.io/rb/gitlab_awesome_release)
 [![build status](https://gitlab.com/ci/projects/9759/status.png?ref=master)](https://gitlab.com/ci/projects/9759?ref=master)
 [![Dependency Status](https://gemnasium.com/c2e0c69e2a02b4bb66481fb32f368e0e.svg)](https://gemnasium.com/a2f4eb18c1920eb39d8e9f1f807dd830)
 
+## Example
+see [CHANGELOG.md](CHANGELOG.md)
+
 ## Requirements
 
-* Ruby 2.1+
+* Ruby v2.1+
+* GitLab v7.11.0+
 
 ## Installation
 
@@ -30,7 +31,87 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### `create_note`
+generate changelog
+
+```sh
+$ gitlab_awesome_release create_note --filename=CHANGELOG.md
+```
+
+### options
+All options can be specified in both the command arguments and environment variables
+
+* `--gitlab-api-endpoint` , `GITLAB_API_ENDPOINT` **(either one is required)**
+  * GitLab API endpoint (e.g. `http://example.com/api/v3`)
+* `--gitlab-api-private-token` , `GITLAB_API_PRIVATE_TOKEN` **(either one is required)**
+  * Your private token. see [/profile/account](img/private_token.png)
+* `--gitlab-project-name` , `GITLAB_PROJECT_NAME` **(either one is required)**
+  * Target project (e.g. `group/repo_name`)
+* `--from-tag` , `FROM_TAG`
+  * The first tag to create a changelog
+  * default: oldest tag
+* `--to-tag` , `TO_TAG`
+  * The last tag to create a changelog
+  * default: latest tag
+* `--filename` , `FILENAME`
+  * Filepath to changelog file (e.g. `CHANGELOG.md`)
+  * if empty, output to console
+* `--allow-tag-format` , `ALLOW_TAG_FORMAT`
+  * Tag format for release note heading (regular expresion pattern)
+  * default: `^v?[\d.]+`
+* `--log-level` , `LOG_LEVEL`
+  * Log level `(debug|info|warn|error|fatal|unknown)`
+  * default: `info`
+
+### marking
+Add version label to MergeRequests
+
+example) https://gitlab.com/sue445/gitlab_awesome_release/merge_requests?state=merged
+
+```sh
+$ gitlab_awesome_release marking --from-tag=v0.1.0 --to-tag=v0.2.0
+```
+
+### options
+All options can be specified in both the command arguments and environment variables
+
+* `--gitlab-api-endpoint` , `GITLAB_API_ENDPOINT` **(either one is required)**
+  * GitLab API endpoint (e.g. `http://example.com/api/v3`)
+* `--gitlab-api-private-token` , `GITLAB_API_PRIVATE_TOKEN` **(either one is required)**
+  * Your private token. see [/profile/account](img/private_token.png)
+* `--gitlab-project-name` , `GITLAB_PROJECT_NAME` **(either one is required)**
+  * Target project (e.g. `group/repo_name`)
+* `--from-tag` , `FROM_TAG` **(either one is required)**
+  * The first tag to marking
+* `--to-tag` , `TO_TAG` **(either one is required)**
+  * The last tag to marking
+* `--label` , `LABEL`
+  * Label to be added to the MergeRequest
+  * default: `--to-tag` or `TO_TAG`
+* `--log-level` , `LOG_LEVEL`
+  * Log level `(debug|info|warn|error|fatal|unknown)`
+  * default: `info`
+
+## ProTip
+Environment variables read from `~/.env.gitlab` and current `.env.gitlab`
+
+`~/.env.gitlab` 
+
+```
+GITLAB_API_ENDPOINT=http://example.com/api/v3
+GITLAB_API_PRIVATE_TOKEN=XXXXXXXXXXXXXXXXXXX
+ALLOW_TAG_FORMAT=^v?[\d.]+
+```
+
+current `.env.gitlab`
+
+```
+GITLAB_PROJECT_NAME=group/name
+ALLOW_TAG_FORMAT=^v?[\d.]+
+```
+
+If defined both `~/.env.gitlab` and current `.env.gitlab`, current `.env.gitlab` is priority
+
 
 ## Development
 

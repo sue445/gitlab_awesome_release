@@ -6,7 +6,11 @@ module GitlabAwesomeRelease
   class CLI < Thor
     DEFAULT_VERSION_FORMAT = "^v?[\\d.]+"
     GITLAB_ENV_FILES = %w(.env.gitlab ~/.env.gitlab)
-    LOG_LEVEL_DESCRIPTION = "Log level (debug|info|warn|error|fatal|unknown)"
+
+    GITLAB_API_DESCRIPTION               = "GitLab API endpoint (e.g. http://example.com/api/v3)"
+    GITLAB_API_PRIVATE_TOKEN_DESCRIPTION = "Your private token"
+    GITLAB_API_PROJECT_NAME              = "Target project (e.g. group/repo_name)"
+    LOG_LEVEL_DESCRIPTION                = "Log level (debug|info|warn|error|fatal|unknown)"
 
     desc "version", "Show gitlab_awesome_release version"
     def version
@@ -14,14 +18,14 @@ module GitlabAwesomeRelease
     end
 
     desc "create_note", "generate changelog"
-    option :filename
-    option :from_tag
-    option :to_tag
-    option :gitlab_api_endpoint
-    option :gitlab_api_private_token
-    option :gitlab_project_name
-    option :allow_tag_format, desc: "Regular expression of tag format", default: DEFAULT_VERSION_FORMAT
-    option :log_level, desc: LOG_LEVEL_DESCRIPTION, default: "info"
+    option :gitlab_api_endpoint,      desc: GITLAB_API_DESCRIPTION
+    option :gitlab_api_private_token, desc: GITLAB_API_PRIVATE_TOKEN_DESCRIPTION
+    option :gitlab_project_name,      desc: GITLAB_API_PROJECT_NAME
+    option :from_tag,                 desc: "The first tag to create a changelog (default: oldest tag)"
+    option :to_tag,                   desc: "The last tag to create a changelog (default: latest tag)"
+    option :filename,                 desc: "Filepath to changelog file (e.g. CHANGELOG.md). if empty, output to console"
+    option :allow_tag_format,         desc: "Tag format for release note heading (regular expresion pattern)", default: DEFAULT_VERSION_FORMAT
+    option :log_level,                desc: LOG_LEVEL_DESCRIPTION, default: "info"
     def create_note
       Dotenv.load(*GITLAB_ENV_FILES)
 
@@ -38,13 +42,13 @@ module GitlabAwesomeRelease
     end
 
     desc "marking", "Add version label to MergeRequests"
-    option :from_tag
-    option :to_tag
-    option :label
-    option :gitlab_api_endpoint
-    option :gitlab_api_private_token
-    option :gitlab_project_name
-    option :log_level, desc: LOG_LEVEL_DESCRIPTION, default: "info"
+    option :gitlab_api_endpoint,      desc: GITLAB_API_DESCRIPTION
+    option :gitlab_api_private_token, desc: GITLAB_API_PRIVATE_TOKEN_DESCRIPTION
+    option :gitlab_project_name,      desc: GITLAB_API_PROJECT_NAME
+    option :from_tag,                 desc: "The first tag to marking"
+    option :to_tag,                   desc: "The last tag to marking"
+    option :label,                    desc: "Label to be added to the MergeRequest"
+    option :log_level,                desc: LOG_LEVEL_DESCRIPTION, default: "info"
     def marking
       Dotenv.load(*GITLAB_ENV_FILES)
 
