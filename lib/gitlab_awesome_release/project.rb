@@ -101,8 +101,11 @@ module GitlabAwesomeRelease
       "* #{mr.title} [!#{iid}](#{mr_url}) *@#{mr.author.username}*"
     end
 
+    # find MergeRequest with iid
     def merge_request(iid)
-      Gitlab.merge_requests(escaped_project_name, iid: iid).first
+      mr = Gitlab.merge_requests(escaped_project_name, iid: iid).first
+      assert_merge_request_iid(mr, iid) if mr
+      mr
     end
 
     def add_merge_request_label(mr, label)
@@ -135,6 +138,11 @@ module GitlabAwesomeRelease
       mr_iids.each_with_object("") do |iid, str|
         str << merge_request_summary(iid) + "\n"
       end
+    end
+
+    def assert_merge_request_iid(mr, iid)
+      # NOTE: MR is found, but server is old GitLab?
+      raise "MergeRequest iid does not match (expected #{iid}, but #{mr.iid})" unless iid == mr.iid
     end
   end
 end
