@@ -3,7 +3,7 @@ Generate changelog from tags and MergeRequests on [GitLab](https://about.gitlab.
 
 [![Gem Version](https://badge.fury.io/rb/gitlab_awesome_release.svg)](https://badge.fury.io/rb/gitlab_awesome_release)
 [![build status](https://gitlab.com/ci/projects/9759/status.png?ref=master)](https://gitlab.com/ci/projects/9759?ref=master)
-[![Dependency Status](https://gemnasium.com/c2e0c69e2a02b4bb66481fb32f368e0e.svg)](https://gemnasium.com/a2f4eb18c1920eb39d8e9f1f807dd830)
+[![Dependency Status](https://gemnasium.com/7f058801015a4fbcf603d936c08836a4.svg)](https://gemnasium.com/19478d2f2735ee355f4c6cd1b8d2c12e)
 
 ## Example
 see [CHANGELOG.md](CHANGELOG.md)
