@@ -1,6 +1,12 @@
 ## Unreleased
-[full changelog](https://gitlab.com/sue445/gitlab_awesome_release/compare/v0.1.0.beta6...HEAD)
+[full changelog](https://gitlab.com/sue445/gitlab_awesome_release/compare/v0.1.0.beta7...HEAD)
 
+
+## v0.1.0.beta7
+[full changelog](https://gitlab.com/sue445/gitlab_awesome_release/compare/v0.1.0.beta6...v0.1.0.beta7)
+
+* Don't update MR when add label [!14](https://gitlab.com/sue445/gitlab_awesome_release/merge_requests/14) *@sue445*
+* Always use GitLab debug logging [!15](https://gitlab.com/sue445/gitlab_awesome_release/merge_requests/15) *@sue445*
 
 ## v0.1.0.beta6
 [full changelog](https://gitlab.com/sue445/gitlab_awesome_release/compare/v0.1.0.beta5...v0.1.0.beta6)
