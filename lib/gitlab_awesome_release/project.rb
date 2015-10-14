@@ -113,7 +113,7 @@ module GitlabAwesomeRelease
       labels << label
 
       Gitlab.update_merge_request(escaped_project_name, mr.id, labels: labels.uniq.join(","))
-      @logger.info "Add [#{label}] to !#{mr.iid}"
+      @logger.info "Add [#{label}] to !#{mr.iid} #{mr.title}"
     end
 
     private
