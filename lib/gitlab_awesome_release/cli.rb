@@ -89,7 +89,7 @@ module GitlabAwesomeRelease
       @logger = Logger.new(STDOUT)
       @logger.level = logger_level(option_or_env(:log_level))
       @logger.formatter = proc{ |severity, datetime, progname, message|
-        "[#{datetime}] #{message}\n"
+        "[#{datetime}] #{severity} #{message}\n"
       }
 
       GitlabAwesomeRelease::Project.new(
