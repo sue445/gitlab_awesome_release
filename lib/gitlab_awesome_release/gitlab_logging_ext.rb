@@ -1,16 +1,19 @@
 module GitlabAwesomeRelease
   module GitlabLoggingExt
-    def get(path, options={})
-      start_time = Time.now
+    [:get, :post, :put, :delete].each do |method|
+      define_method method do |path, options = {}|
+        begin
+          start_time = Time.now
 
-      super(path, options)
+          super(path, options)
+        ensure
+          end_time = Time.now
 
-    ensure
-      end_time = Time.now
-
-      # NOTE: options[:headers] contains PRIVATE-TOKEN
-      _options = options.reject{ |k, _v| k == :headers }
-      logger.debug "(#{end_time - start_time} sec) GET #{path} #{_options}"
+          # NOTE: options[:headers] contains PRIVATE-TOKEN
+          _options = options.reject{ |k, _v| k == :headers }
+          logger.debug "(#{end_time - start_time} sec) #{method.upcase} #{path} #{_options}"
+        end
+      end
     end
 
     def logger
