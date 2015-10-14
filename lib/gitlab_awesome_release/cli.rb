@@ -92,6 +92,7 @@ module GitlabAwesomeRelease
         "[#{datetime}] #{severity} #{message}\n"
       }
 
+      Gitlab::Request.logger = @logger
       GitlabAwesomeRelease::Project.new(
         api_endpoint:     gitlab_api_endpoint,
         private_token:    gitlab_api_private_token,

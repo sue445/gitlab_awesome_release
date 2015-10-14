@@ -15,13 +15,10 @@ module GitlabAwesomeRelease
         end
       end
     end
-
-    def logger
-      @logger ||= Logger.new(STDOUT)
-    end
   end
 end
 
 Gitlab::Request.class_eval do
   prepend GitlabAwesomeRelease::GitlabLoggingExt
+  cattr_accessor :logger
 end
