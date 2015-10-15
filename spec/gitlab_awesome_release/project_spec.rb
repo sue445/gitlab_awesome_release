@@ -168,6 +168,8 @@ describe GitlabAwesomeRelease::Project do
 
         * Add splash_star [!4](https://gitlab.com/sue445/gitlab_example/merge_requests/4) *@sue445*
 
+        ## v0.0.1
+
       EOS
     end
   end

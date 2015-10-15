@@ -48,6 +48,7 @@ module GitlabAwesomeRelease
     # @return [String]
     def generate_change_log(oldest_tag, newest_tag)
       release_notes = []
+      release_notes << generate_heading(oldest_tag)
       release_tag_names.within(oldest_tag, newest_tag).each_cons(2) do |from, to|
         release_notes << generate_release_note(from, to)
       end
@@ -70,13 +71,17 @@ module GitlabAwesomeRelease
       title ||= to
       summary = merge_requests_summary_between(from, to)
 
-      header = <<-MARKDOWN.strip_heredoc
-        ## #{title}
+      header = generate_heading(title)
+      header << <<-MARKDOWN.strip_heredoc
         [full changelog](#{web_url}/compare/#{from}...#{to})
 
       MARKDOWN
 
       header + summary
+    end
+
+    def generate_heading(title)
+      "## #{title}\n"
     end
 
     # find merge requests between from...to
