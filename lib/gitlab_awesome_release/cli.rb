@@ -41,6 +41,31 @@ module GitlabAwesomeRelease
       @logger.info "finish!"
     end
 
+    desc "create_latest_note", "generate latest changelog"
+    option :gitlab_api_endpoint,      desc: GITLAB_API_DESCRIPTION
+    option :gitlab_api_private_token, desc: GITLAB_API_PRIVATE_TOKEN_DESCRIPTION
+    option :gitlab_project_name,      desc: GITLAB_API_PROJECT_NAME
+    option :filename,                 desc: "Filepath to changelog file (e.g. CHANGELOG.md). if empty, output to console"
+    option :allow_tag_format,         desc: "Tag format for release note heading (regular expresion pattern)", default: DEFAULT_VERSION_FORMAT
+    option :log_level,                desc: LOG_LEVEL_DESCRIPTION, default: "info"
+    def create_latest_note
+      Dotenv.load(*GITLAB_ENV_FILES)
+
+      project = create_project
+
+      tag_names = project.release_tag_names
+
+      changelog =
+        if tag_names.count >= 2
+          project.generate_change_log(tag_names[-2], tag_names[-1])
+        elsif tag_names.count == 1
+          project.generate_change_log(tag_names[0], tag_names[0])
+        end
+
+      write_changelog(changelog) if changelog
+      @logger.info "finish!"
+    end
+
     desc "marking", "Add version label to MergeRequests"
     option :gitlab_api_endpoint,      desc: GITLAB_API_DESCRIPTION
     option :gitlab_api_private_token, desc: GITLAB_API_PRIVATE_TOKEN_DESCRIPTION
