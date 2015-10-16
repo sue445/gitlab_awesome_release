@@ -41,7 +41,7 @@ module GitlabAwesomeRelease
       @logger.info "finish!"
     end
 
-    desc "create_latest_note", "generate latest changelog"
+    desc "create_latest_note", "generate release note only latest version and unreleased"
     option :gitlab_api_endpoint,      desc: GITLAB_API_DESCRIPTION
     option :gitlab_api_private_token, desc: GITLAB_API_PRIVATE_TOKEN_DESCRIPTION
     option :gitlab_project_name,      desc: GITLAB_API_PROJECT_NAME

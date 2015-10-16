@@ -65,6 +65,32 @@ All options can be specified in both the command arguments and environment varia
   * Log level `(debug|info|warn|error|fatal|unknown)`
   * default: `info`
 
+### `create_latest_note`
+generate release note only latest version and unreleased
+
+```sh
+$ gitlab_awesome_release create_latest_note
+```
+
+### options
+All options can be specified in both the command arguments and environment variables
+
+* `--gitlab-api-endpoint` , `GITLAB_API_ENDPOINT` **(either one is required)**
+  * GitLab API endpoint (e.g. `http://example.com/api/v3`)
+* `--gitlab-api-private-token` , `GITLAB_API_PRIVATE_TOKEN` **(either one is required)**
+  * Your private token. see [/profile/account](img/private_token.png)
+* `--gitlab-project-name` , `GITLAB_PROJECT_NAME` **(either one is required)**
+  * Target project (e.g. `group/repo_name`)
+* `--filename` , `FILENAME`
+  * Filepath to changelog file (e.g. `CHANGELOG.md`)
+  * if empty, output to console
+* `--allow-tag-format` , `ALLOW_TAG_FORMAT`
+  * Tag format for release note heading (regular expresion pattern)
+  * default: `^v?[\d.]+`
+* `--log-level` , `LOG_LEVEL`
+  * Log level `(debug|info|warn|error|fatal|unknown)`
+  * default: `info`
+
 ### marking
 Add version label to MergeRequests
 
