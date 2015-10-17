@@ -1,6 +1,11 @@
 ## Unreleased
-[full changelog](https://gitlab.com/sue445/gitlab_awesome_release/compare/v0.1.0.beta8...HEAD)
+[full changelog](https://gitlab.com/sue445/gitlab_awesome_release/compare/v0.1.0...HEAD)
 
+
+## v0.1.0
+[full changelog](https://gitlab.com/sue445/gitlab_awesome_release/compare/v0.1.0.beta8...v0.1.0)
+
+* Add create_latest_note [!18](https://gitlab.com/sue445/gitlab_awesome_release/merge_requests/18) *@sue445*
 
 ## v0.1.0.beta8
 [full changelog](https://gitlab.com/sue445/gitlab_awesome_release/compare/v0.1.0.beta7...v0.1.0.beta8)
