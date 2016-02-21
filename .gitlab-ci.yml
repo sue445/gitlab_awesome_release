@@ -1,3 +1,9 @@
+cache:
+  untracked: true
+  key: "$CI_BUILD_NAME"
+  paths:
+  - vendor/bundle/
+
 stages:
   - test
 
