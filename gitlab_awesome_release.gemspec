@@ -1,7 +1,7 @@
 # coding: utf-8
-lib = File.expand_path('../lib', __FILE__)
+lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'gitlab_awesome_release/version'
+require "gitlab_awesome_release/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "gitlab_awesome_release"
@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["sue445"]
   spec.email         = ["sue445@sue445.net"]
 
-  spec.summary       = %q{Generate changelog from tags and MergeRequests on GitLab}
-  spec.description   = %q{Generate changelog from tags and MergeRequests on GitLab}
+  spec.summary       = "Generate changelog from tags and MergeRequests on GitLab"
+  spec.description   = "Generate changelog from tags and MergeRequests on GitLab"
   spec.homepage      = "https://gitlab.com/sue445/gitlab_awesome_release"
   spec.license       = "MIT"
 
