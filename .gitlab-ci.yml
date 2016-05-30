@@ -1,15 +1,22 @@
+image: drecom/ubuntu-ruby:2.3.0
+
+variables:
+  CI: "true"
+  BUNDLE_CACHE: "vendor/bundle/"
+
 cache:
   untracked: true
   key: "$CI_BUILD_NAME"
   paths:
-  - vendor/bundle/
+    - vendor/bundle/
+
+before_script:
+  - ./gitlab-ci/setup.sh
 
 stages:
   - test
 
-job1:
+rspec:
   stage: test
   script:
-    - ./script/build.sh
-  tags:
-    - ruby
+    - ./gitlab-ci/rspec.sh
