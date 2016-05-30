@@ -20,3 +20,9 @@ rspec:
   stage: test
   script:
     - ./gitlab-ci/rspec.sh
+
+rubocop:
+  stage: test
+  script:
+    - ./gitlab-ci/rubocop.sh
+  allow_failure: true
