@@ -10,7 +10,7 @@ module GitlabAwesomeRelease
           end_time = Time.now
 
           # NOTE: options[:headers] contains PRIVATE-TOKEN
-          _options = options.reject{ |k, _v| k == :headers }
+          _options = options.reject { |k, _v| k == :headers }
           logger.debug "(#{end_time - start_time} sec) #{method.upcase} #{path} #{_options}"
         end
       end

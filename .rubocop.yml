@@ -1,0 +1,8 @@
+inherit_gem:
+  onkcop: "config/rubocop.yml"
+
+AllCops:
+  TargetRubyVersion: 2.3
+
+Metrics/ClassLength:
+  Max: 130

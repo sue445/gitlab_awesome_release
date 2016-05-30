@@ -5,7 +5,7 @@ describe GitlabAwesomeRelease::Project do
       private_token:    private_token,
       project_name:     project_name,
       allow_tag_format: allow_tag_format,
-      logger:           logger,
+      logger:           logger
     )
   end
 
@@ -70,7 +70,7 @@ describe GitlabAwesomeRelease::Project do
     subject { project.generate_release_note(from, to, title: title) }
 
     before do
-      allow(project).to receive(:merge_requests_summary_between){ summary }
+      allow(project).to receive(:merge_requests_summary_between) { summary }
     end
 
     let(:from)  { "v0.0.2" }
@@ -144,7 +144,7 @@ describe GitlabAwesomeRelease::Project do
         EOS
       end
 
-      allow(project).to receive(:generate_release_note).with("v0.0.3", "HEAD", {title: "Unreleased"}) do
+      allow(project).to receive(:generate_release_note).with("v0.0.3", "HEAD", { title: "Unreleased" }) do
         <<-EOS.strip_heredoc
           ## Unreleased
           [full changelog](https://gitlab.com/sue445/gitlab_example/compare/v0.0.3...HEAD)
@@ -182,7 +182,7 @@ describe GitlabAwesomeRelease::Project do
       allow(project).to receive(:all_tag_names) { %w(v0.0.1 0.0.2 tmp v0.0.3.beta1 v0.0.3) }
     end
 
-    let(:allow_tag_format)     { /^v?[\d.]+/ }
+    let(:allow_tag_format) { /^v?[\d.]+/ }
 
     it { should eq %w(v0.0.1 0.0.2 v0.0.3.beta1 v0.0.3) }
   end

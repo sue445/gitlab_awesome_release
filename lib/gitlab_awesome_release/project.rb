@@ -35,7 +35,7 @@ module GitlabAwesomeRelease
         with_paging do |params|
           Gitlab.repo_tags(escaped_project_name, params)
         end
-      @all_tag_names = repo_tags.sort_by{ |tag| tag.commit.authored_date }.map(&:name)
+      @all_tag_names = repo_tags.sort_by { |tag| tag.commit.authored_date }.map(&:name)
     end
 
     # @return [Array<String>]
@@ -99,7 +99,7 @@ module GitlabAwesomeRelease
       commits = Gitlab.repo_compare(escaped_project_name, from, to).commits
       commits.map do |commit|
         commit["message"] =~ /^Merge branch .*See merge request \!(\d+)$/m
-        $1
+        Regexp.last_match(1)
       end.compact.map(&:to_i)
     end
 
@@ -130,34 +130,34 @@ module GitlabAwesomeRelease
 
     private
 
-    def escaped_project_name
-      CGI.escape(@project_name)
-    end
-
-    # @yield [params] paging block
-    # @yieldparam params [Hash] paging params for GitLab API (page: current page, per_page)
-    # @yieldreturn response in all pages
-    def with_paging
-      all_response = []
-      page = 1
-      loop do
-        response = yield(page: page, per_page: PER_PAGE)
-        all_response += response
-        return all_response if response.size < PER_PAGE
-        page += 1
+      def escaped_project_name
+        CGI.escape(@project_name)
       end
-    end
 
-    def merge_requests_summary_between(from, to)
-      mr_iids = merge_request_iids_between(from, to)
-      mr_iids.each_with_object("") do |iid, str|
-        str << merge_request_summary(iid) + "\n"
+      # @yield [params] paging block
+      # @yieldparam params [Hash] paging params for GitLab API (page: current page, per_page)
+      # @yieldreturn response in all pages
+      def with_paging
+        all_response = []
+        page = 1
+        loop do
+          response = yield(page: page, per_page: PER_PAGE)
+          all_response += response
+          return all_response if response.size < PER_PAGE
+          page += 1
+        end
       end
-    end
 
-    def assert_merge_request_iid(mr, iid)
-      # NOTE: MR is found, but server is old GitLab?
-      raise "MergeRequest iid does not match (expected #{iid}, but #{mr.iid})" unless iid == mr.iid
-    end
+      def merge_requests_summary_between(from, to)
+        mr_iids = merge_request_iids_between(from, to)
+        mr_iids.each_with_object("") do |iid, str|
+          str << merge_request_summary(iid) + "\n"
+        end
+      end
+
+      def assert_merge_request_iid(mr, iid)
+        # NOTE: MR is found, but server is old GitLab?
+        raise "MergeRequest iid does not match (expected #{iid}, but #{mr.iid})" unless iid == mr.iid
+      end
   end
 end

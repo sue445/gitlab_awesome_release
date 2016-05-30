@@ -4,13 +4,13 @@ require "dotenv"
 
 module GitlabAwesomeRelease
   class CLI < Thor
-    DEFAULT_VERSION_FORMAT = "^v?[\\d.]+"
-    GITLAB_ENV_FILES = %w(.env.gitlab ~/.env.gitlab)
+    DEFAULT_VERSION_FORMAT = "^v?[\\d.]+".freeze
+    GITLAB_ENV_FILES = %w(.env.gitlab ~/.env.gitlab).freeze
 
-    GITLAB_API_DESCRIPTION               = "GitLab API endpoint (e.g. http://example.com/api/v3)"
-    GITLAB_API_PRIVATE_TOKEN_DESCRIPTION = "Your private token"
-    GITLAB_API_PROJECT_NAME              = "Target project (e.g. group/repo_name)"
-    LOG_LEVEL_DESCRIPTION                = "Log level (debug|info|warn|error|fatal|unknown)"
+    GITLAB_API_DESCRIPTION               = "GitLab API endpoint (e.g. http://example.com/api/v3)".freeze
+    GITLAB_API_PRIVATE_TOKEN_DESCRIPTION = "Your private token".freeze
+    GITLAB_API_PROJECT_NAME              = "Target project (e.g. group/repo_name)".freeze
+    LOG_LEVEL_DESCRIPTION                = "Log level (debug|info|warn|error|fatal|unknown)".freeze
 
     desc "version", "Show gitlab_awesome_release version"
     def version
@@ -92,70 +92,70 @@ module GitlabAwesomeRelease
 
     private
 
-    def option_or_env(name, default = nil)
-      upper_name = name.to_s.upcase
-      options[name].presence || ENV[upper_name].presence || default
-    end
+      def option_or_env(name, default = nil)
+        upper_name = name.to_s.upcase
+        options[name].presence || ENV[upper_name].presence || default
+      end
 
-    def option_or_env!(name)
-      value = option_or_env(name)
-      return value if value
+      def option_or_env!(name)
+        value = option_or_env(name)
+        return value if value
 
-      puts "--#{name.to_s.gsub("_", "-")} or #{name.to_s.upcase} is either required!"
-      exit!
-    end
+        puts "--#{name.to_s.tr("_", "-")} or #{name.to_s.upcase} is either required!"
+        exit!
+      end
 
-    def create_project
-      gitlab_api_endpoint      = option_or_env!(:gitlab_api_endpoint)
-      gitlab_api_private_token = option_or_env!(:gitlab_api_private_token)
-      gitlab_project_name      = option_or_env!(:gitlab_project_name)
-      allow_tag_format         = option_or_env(:allow_tag_format, DEFAULT_VERSION_FORMAT)
+      def create_project
+        gitlab_api_endpoint      = option_or_env!(:gitlab_api_endpoint)
+        gitlab_api_private_token = option_or_env!(:gitlab_api_private_token)
+        gitlab_project_name      = option_or_env!(:gitlab_project_name)
+        allow_tag_format         = option_or_env(:allow_tag_format, DEFAULT_VERSION_FORMAT)
 
-      @logger = Logger.new(STDOUT)
-      @logger.level = logger_level(option_or_env(:log_level))
-      @logger.formatter = proc{ |severity, datetime, progname, message|
-        "[#{datetime}] #{severity} #{message}\n"
-      }
+        @logger = Logger.new(STDOUT)
+        @logger.level = logger_level(option_or_env(:log_level))
+        @logger.formatter = proc{ |severity, datetime, _progname, message|
+          "[#{datetime}] #{severity} #{message}\n"
+        }
 
-      Gitlab::Request.logger = @logger
-      GitlabAwesomeRelease::Project.new(
-        api_endpoint:     gitlab_api_endpoint,
-        private_token:    gitlab_api_private_token,
-        project_name:     gitlab_project_name,
-        allow_tag_format: /#{allow_tag_format}/,
-        logger:           @logger,
-      )
-    end
+        Gitlab::Request.logger = @logger
+        GitlabAwesomeRelease::Project.new(
+          api_endpoint:     gitlab_api_endpoint,
+          private_token:    gitlab_api_private_token,
+          project_name:     gitlab_project_name,
+          allow_tag_format: /#{allow_tag_format}/,
+          logger:           @logger
+        )
+      end
 
-    def write_changelog(changelog)
-      filename = option_or_env(:filename)
-      if filename
-        File.open(filename, "wb") do |f|
-          f.write(changelog)
+      def write_changelog(changelog)
+        filename = option_or_env(:filename)
+        if filename
+          File.open(filename, "wb") do |f|
+            f.write(changelog)
+          end
+          @logger.info "Write to #{filename}"
+        else
+          puts changelog
         end
-        @logger.info "Write to #{filename}"
-      else
-        puts changelog
       end
-    end
 
-    def logger_level(log_level)
-      case log_level.to_sym
-      when :debug
-        Logger::DEBUG
-      when :error
-        Logger::ERROR
-      when :fatal
-        Logger::FATAL
-      when :info
-        Logger::INFO
-      when :unknown
-        Logger::UNKNOWN
-      when :warn
-        Logger::WARN
-      else
-        raise "Unknown log_level: #{log_level}"
+      def logger_level(log_level)
+        case log_level.to_sym
+        when :debug
+          Logger::DEBUG
+        when :error
+          Logger::ERROR
+        when :fatal
+          Logger::FATAL
+        when :info
+          Logger::INFO
+        when :unknown
+          Logger::UNKNOWN
+        when :warn
+          Logger::WARN
+        else
+          raise "Unknown log_level: #{log_level}"
+        end
       end
-    end
   end
 end
