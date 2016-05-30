@@ -99,7 +99,7 @@ module GitlabAwesomeRelease
       commits = Gitlab.repo_compare(escaped_project_name, from, to).commits
       commits.map do |commit|
         commit["message"] =~ /^Merge branch .*See merge request \!(\d+)$/m
-        $1
+        Regexp.last_match(1)
       end.compact.map(&:to_i)
     end
 
