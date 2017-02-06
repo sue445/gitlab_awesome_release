@@ -3,6 +3,8 @@ require "gitlab_awesome_release"
 require "dotenv"
 
 module GitlabAwesomeRelease
+  require "logger"
+
   class CLI < Thor
     DEFAULT_VERSION_FORMAT = "^v?[\\d.]+".freeze
     GITLAB_ENV_FILES = %w(.env.gitlab ~/.env.gitlab).freeze
@@ -94,7 +96,10 @@ module GitlabAwesomeRelease
 
       def option_or_env(name, default = nil)
         upper_name = name.to_s.upcase
-        options[name].presence || ENV[upper_name].presence || default
+        return options[name] if options[name] && !options[name].to_s.empty?
+        return ENV[upper_name] if ENV[upper_name] && !ENV[upper_name].empty?
+
+        default
       end
 
       def option_or_env!(name)

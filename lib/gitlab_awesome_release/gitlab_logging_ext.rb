@@ -11,7 +11,7 @@ module GitlabAwesomeRelease
 
           # NOTE: options[:headers] contains PRIVATE-TOKEN
           _options = options.reject { |k, _v| k == :headers }
-          logger.debug "(#{end_time - start_time} sec) #{method.upcase} #{path} #{_options}"
+          self.class.logger.debug "(#{end_time - start_time} sec) #{method.upcase} #{path} #{_options}"
         end
       end
     end
@@ -20,5 +20,12 @@ end
 
 Gitlab::Request.class_eval do
   prepend GitlabAwesomeRelease::GitlabLoggingExt
-  cattr_accessor :logger
+
+  def self.logger
+    Gitlab::Request.instance_variable_get(:@logger)
+  end
+
+  def self.logger=(logger)
+    Gitlab::Request.instance_variable_set(:@logger, logger)
+  end
 end
