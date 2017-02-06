@@ -1,6 +1,17 @@
 ## Unreleased
-[full changelog](https://gitlab.com/sue445/gitlab_awesome_release/compare/v0.1.0...HEAD)
+[full changelog](https://gitlab.com/sue445/gitlab_awesome_release/compare/v0.1.1...HEAD)
 
+
+## v0.1.1
+[full changelog](https://gitlab.com/sue445/gitlab_awesome_release/compare/v0.1.0...v0.1.1)
+
+* Use ci cache [!19](https://gitlab.com/sue445/gitlab_awesome_release/merge_requests/19) *@sue445*
+* Tweak gitlab-ci [!20](https://gitlab.com/sue445/gitlab_awesome_release/merge_requests/20) *@sue445*
+* Add rubocop [!21](https://gitlab.com/sue445/gitlab_awesome_release/merge_requests/21) *@sue445*
+* Use ruby 2.3.1 [!22](https://gitlab.com/sue445/gitlab_awesome_release/merge_requests/22) *@sue445*
+* CI against ruby 2.1, 2.2, 2.3 and 2.4 [!23](https://gitlab.com/sue445/gitlab_awesome_release/merge_requests/23) *@sue445*
+* Remove activesupport from dependency :put_litter_in_its_place: [!24](https://gitlab.com/sue445/gitlab_awesome_release/merge_requests/24) *@sue445*
+* update onkcop [!25](https://gitlab.com/sue445/gitlab_awesome_release/merge_requests/25) *@sue445*
 
 ## v0.1.0
 [full changelog](https://gitlab.com/sue445/gitlab_awesome_release/compare/v0.1.0.beta8...v0.1.0)
