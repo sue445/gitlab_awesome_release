@@ -97,10 +97,14 @@ module GitlabAwesomeRelease
     # @return [Array<Integer>] MergeRequest iids
     def merge_request_iids_between(from, to)
       commits = Gitlab.repo_compare(escaped_project_name, from, to).commits
-      commits.map do |commit|
-        commit["message"] =~ /^Merge branch .*See merge request \!(\d+)$/m
-        Regexp.last_match(1)
-      end.compact.map(&:to_i)
+
+      merge_request_iids =
+        commits.map do |commit|
+          commit["message"] =~ /^Merge branch .*See merge request \!(\d+)$/m
+          Regexp.last_match(1)
+        end
+
+      merge_request_iids.compact.map(&:to_i)
     end
 
     # @param iid [Integer] MergeRequest iid
