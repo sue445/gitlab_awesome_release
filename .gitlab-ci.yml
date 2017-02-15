@@ -27,31 +27,12 @@ ruby2.1:rspec:
   script:
     - ./gitlab-ci/rspec.sh
 
-ruby2.1:rubocop:
-  <<: *job_definition
-  image: drecom/centos-ruby:2.1.10
-
-  script:
-    - ./gitlab-ci/rubocop.sh
-
-  allow_failure: true
-
 ruby2.2:rspec:
   <<: *job_definition
   image: drecom/centos-ruby:2.2.6
 
   script:
     - ./gitlab-ci/rspec.sh
-
-ruby2.2:rubocop:
-  <<: *job_definition
-
-  image: drecom/centos-ruby:2.2.6
-
-  script:
-    - ./gitlab-ci/rubocop.sh
-
-  allow_failure: true
 
 ruby2.3:rspec:
   <<: *job_definition
@@ -60,15 +41,6 @@ ruby2.3:rspec:
   script:
     - ./gitlab-ci/rspec.sh
 
-ruby2.3:rubocop:
-  <<: *job_definition
-  image: drecom/centos-ruby:2.3.3
-
-  script:
-    - ./gitlab-ci/rubocop.sh
-
-  allow_failure: true
-
 ruby2.4:rspec:
   <<: *job_definition
   image: drecom/centos-ruby:2.4.0
@@ -76,9 +48,9 @@ ruby2.4:rspec:
   script:
     - ./gitlab-ci/rspec.sh
 
-ruby2.4:rubocop:
+rubocop:
   <<: *job_definition
-  image: drecom/centos-ruby:2.4.0
+  image: drecom/centos-ruby
 
   script:
     - ./gitlab-ci/rubocop.sh
