@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = ">= 2.1.0"
 
   spec.add_dependency "dotenv"
-  spec.add_dependency "gitlab"
+  spec.add_dependency "gitlab", ">= 4.0.0"
   spec.add_dependency "thor"
 
   spec.add_development_dependency "bundler", "~> 1.10"

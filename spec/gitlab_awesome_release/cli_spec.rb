@@ -115,7 +115,7 @@ describe GitlabAwesomeRelease::CLI do
         with(headers: { "Accept" => "application/json", "Private-Token" => private_token }).
         to_return(status: 200, body: read_stub("merge_requests_with_iid.json"), headers: {})
 
-      stub_request(:put, %r{#{api_endpoint}/projects/#{escaped_project_name}/merge_request/[0-9]+}).
+      stub_request(:put, %r{#{api_endpoint}/projects/#{escaped_project_name}/merge_requests/[0-9]+}).
         with(headers: { "Accept" => "application/json", "Private-Token" => private_token }).
         to_return(status: 200, body: read_stub("merge_request.json"), headers: {})
     end

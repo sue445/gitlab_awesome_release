@@ -22,7 +22,7 @@ module GitlabAwesomeRelease
     end
 
     def web_url
-      @web_url ||= Gitlab.project(escaped_project_name).web_url
+      @web_url ||= Gitlab.project(@project_name).web_url
     end
 
     # all tag names order by author date
@@ -33,7 +33,7 @@ module GitlabAwesomeRelease
       @logger.info "fetch git tags"
       repo_tags =
         with_paging do |params|
-          Gitlab.repo_tags(escaped_project_name, params)
+          Gitlab.repo_tags(@project_name, params)
         end
       @all_tag_names = repo_tags.sort_by { |tag| tag.commit.authored_date }.map(&:name)
     end
@@ -96,7 +96,7 @@ module GitlabAwesomeRelease
     # @param to   [String]
     # @return [Array<Integer>] MergeRequest iids
     def merge_request_iids_between(from, to)
-      commits = Gitlab.repo_compare(escaped_project_name, from, to).commits
+      commits = Gitlab.repo_compare(@project_name, from, to).commits
 
       merge_request_iids =
         commits.map do |commit|
@@ -119,7 +119,7 @@ module GitlabAwesomeRelease
 
     # find MergeRequest with iid
     def merge_request(iid)
-      mr = Gitlab.merge_requests(escaped_project_name, iid: iid).first
+      mr = Gitlab.merge_requests(@project_name, iid: iid).first
       assert_merge_request_iid(mr, iid) if mr
       mr
     end
@@ -128,15 +128,11 @@ module GitlabAwesomeRelease
       labels = mr.labels
       labels << label
 
-      Gitlab.update_merge_request(escaped_project_name, mr.id, labels: labels.uniq.join(","))
+      Gitlab.update_merge_request(@project_name, mr.id, labels: labels.uniq.join(","))
       @logger.info "Add [#{label}] to !#{mr.iid} #{mr.title}"
     end
 
     private
-
-      def escaped_project_name
-        CGI.escape(@project_name)
-      end
 
       # @yield [params] paging block
       # @yieldparam params [Hash] paging params for GitLab API (page: current page, per_page)
