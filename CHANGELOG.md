@@ -1,6 +1,12 @@
 ## Unreleased
-[full changelog](https://gitlab.com/sue445/gitlab_awesome_release/compare/v0.1.1...HEAD)
+[full changelog](https://gitlab.com/sue445/gitlab_awesome_release/compare/v0.1.2...HEAD)
 
+
+## v0.1.2
+[full changelog](https://gitlab.com/sue445/gitlab_awesome_release/compare/v0.1.1...v0.1.2)
+
+* Run rubocop only latest ruby [!26](https://gitlab.com/sue445/gitlab_awesome_release/merge_requests/26) *@sue445*
+* Fixed. can not call GitLab API using gitlab v4+ [!27](https://gitlab.com/sue445/gitlab_awesome_release/merge_requests/27) *@sue445*
 
 ## v0.1.1
 [full changelog](https://gitlab.com/sue445/gitlab_awesome_release/compare/v0.1.0...v0.1.1)
