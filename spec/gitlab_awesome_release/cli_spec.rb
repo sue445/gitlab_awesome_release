@@ -24,7 +24,7 @@ describe GitlabAwesomeRelease::CLI do
     let(:filename) { nil }
     let(:from_tag) { nil }
     let(:to_tag)   { nil }
-    let(:api_endpoint)         { "http://example.com/api/v3" }
+    let(:api_endpoint)         { "http://example.com/api/v4" }
     let(:private_token)        { "XXXXXXXXXXXXXXXXXXX" }
     let(:project_name)         { "group/name" }
     let(:escaped_project_name) { "group%2Fname" }
@@ -100,7 +100,7 @@ describe GitlabAwesomeRelease::CLI do
     let(:from_tag) { "v0.0.1" }
     let(:to_tag)   { "v0.0.2" }
     let(:label)    { "ver0.0.2" }
-    let(:api_endpoint)         { "http://example.com/api/v3" }
+    let(:api_endpoint)         { "http://example.com/api/v4" }
     let(:private_token)        { "XXXXXXXXXXXXXXXXXXX" }
     let(:project_name)         { "group/name" }
     let(:escaped_project_name) { "group%2Fname" }

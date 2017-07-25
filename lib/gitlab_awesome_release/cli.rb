@@ -9,7 +9,7 @@ module GitlabAwesomeRelease
     DEFAULT_VERSION_FORMAT = "^v?[\\d.]+".freeze
     GITLAB_ENV_FILES = %w(.env.gitlab ~/.env.gitlab).freeze
 
-    GITLAB_API_DESCRIPTION               = "GitLab API endpoint (e.g. http://example.com/api/v3)".freeze
+    GITLAB_API_DESCRIPTION               = "GitLab API endpoint (e.g. http://example.com/api/v4)".freeze
     GITLAB_API_PRIVATE_TOKEN_DESCRIPTION = "Your private token".freeze
     GITLAB_API_PROJECT_NAME              = "Target project (e.g. group/repo_name)".freeze
     LOG_LEVEL_DESCRIPTION                = "Log level (debug|info|warn|error|fatal|unknown)".freeze

@@ -43,7 +43,7 @@ $ gitlab_awesome_release create_note --filename=CHANGELOG.md
 All options can be specified in both the command arguments and environment variables
 
 * `--gitlab-api-endpoint` , `GITLAB_API_ENDPOINT` **(either one is required)**
-  * GitLab API endpoint (e.g. `http://example.com/api/v3`)
+  * GitLab API endpoint (e.g. `http://example.com/api/v4`)
 * `--gitlab-api-private-token` , `GITLAB_API_PRIVATE_TOKEN` **(either one is required)**
   * Your private token. see [/profile/account](img/private_token.png)
 * `--gitlab-project-name` , `GITLAB_PROJECT_NAME` **(either one is required)**
@@ -75,7 +75,7 @@ $ gitlab_awesome_release create_latest_note
 All options can be specified in both the command arguments and environment variables
 
 * `--gitlab-api-endpoint` , `GITLAB_API_ENDPOINT` **(either one is required)**
-  * GitLab API endpoint (e.g. `http://example.com/api/v3`)
+  * GitLab API endpoint (e.g. `http://example.com/api/v4`)
 * `--gitlab-api-private-token` , `GITLAB_API_PRIVATE_TOKEN` **(either one is required)**
   * Your private token. see [/profile/account](img/private_token.png)
 * `--gitlab-project-name` , `GITLAB_PROJECT_NAME` **(either one is required)**
@@ -103,7 +103,7 @@ $ gitlab_awesome_release marking --from-tag=v0.1.0 --to-tag=v0.2.0
 All options can be specified in both the command arguments and environment variables
 
 * `--gitlab-api-endpoint` , `GITLAB_API_ENDPOINT` **(either one is required)**
-  * GitLab API endpoint (e.g. `http://example.com/api/v3`)
+  * GitLab API endpoint (e.g. `http://example.com/api/v4`)
 * `--gitlab-api-private-token` , `GITLAB_API_PRIVATE_TOKEN` **(either one is required)**
   * Your private token. see [/profile/account](img/private_token.png)
 * `--gitlab-project-name` , `GITLAB_PROJECT_NAME` **(either one is required)**
@@ -125,7 +125,7 @@ Environment variables read from `~/.env.gitlab` and current `.env.gitlab`
 `~/.env.gitlab`
 
 ```
-GITLAB_API_ENDPOINT=http://example.com/api/v3
+GITLAB_API_ENDPOINT=http://example.com/api/v4
 GITLAB_API_PRIVATE_TOKEN=XXXXXXXXXXXXXXXXXXX
 ALLOW_TAG_FORMAT=^v?[\d.]+
 ```
