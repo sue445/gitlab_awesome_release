@@ -122,7 +122,7 @@ All options can be specified in both the command arguments and environment varia
 ## ProTip
 Environment variables read from `~/.env.gitlab` and current `.env.gitlab`
 
-`~/.env.gitlab` 
+`~/.env.gitlab`
 
 ```
 GITLAB_API_ENDPOINT=http://example.com/api/v3
