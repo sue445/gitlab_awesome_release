@@ -1,9 +1,4 @@
 describe GitlabAwesomeRelease::CLI do
-  before do
-    # Ignore assert_merge_request_iid because stub always return same response
-    allow_any_instance_of(GitlabAwesomeRelease::Project).to receive(:assert_merge_request_iid)
-  end
-
   describe "#create_note" do
     subject do
       GitlabAwesomeRelease::CLI.new.invoke(
@@ -45,9 +40,9 @@ describe GitlabAwesomeRelease::CLI do
         with(headers: { "Accept" => "application/json", "Private-Token" => private_token }).
         to_return(status: 200, body: read_stub("repository_compare.json"), headers: {})
 
-      stub_request(:get, %r{#{api_endpoint}/projects/#{escaped_project_name}/merge_requests}).
+      stub_request(:get, %r{#{api_endpoint}/projects/#{escaped_project_name}/merge_requests/[0-9]+}).
         with(headers: { "Accept" => "application/json", "Private-Token" => private_token }).
-        to_return(status: 200, body: read_stub("merge_requests_with_iid.json"), headers: {})
+        to_return(status: 200, body: read_stub("merge_request.json"), headers: {})
     end
 
     context "When both 'from_tag' and 'to_tag' are empty" do
@@ -111,11 +106,11 @@ describe GitlabAwesomeRelease::CLI do
         with(headers: { "Accept" => "application/json", "Private-Token" => private_token }).
         to_return(status: 200, body: read_stub("repository_compare.json"), headers: {})
 
-      stub_request(:get, %r{#{api_endpoint}/projects/#{escaped_project_name}/merge_requests}).
-        with(headers: { "Accept" => "application/json", "Private-Token" => private_token }).
-        to_return(status: 200, body: read_stub("merge_requests_with_iid.json"), headers: {})
-
       stub_request(:put, %r{#{api_endpoint}/projects/#{escaped_project_name}/merge_requests/[0-9]+}).
+        with(headers: { "Accept" => "application/json", "Private-Token" => private_token }).
+        to_return(status: 200, body: read_stub("merge_request.json"), headers: {})
+
+      stub_request(:get, %r{#{api_endpoint}/projects/#{escaped_project_name}/merge_requests/[0-9]+}).
         with(headers: { "Accept" => "application/json", "Private-Token" => private_token }).
         to_return(status: 200, body: read_stub("merge_request.json"), headers: {})
     end
