@@ -1,9 +1,4 @@
 describe GitlabAwesomeRelease::CLI do
-  before do
-    # Ignore assert_merge_request_iid because stub always return same response
-    allow_any_instance_of(GitlabAwesomeRelease::Project).to receive(:assert_merge_request_iid)
-  end
-
   describe "#create_note" do
     subject do
       GitlabAwesomeRelease::CLI.new.invoke(
@@ -24,7 +19,7 @@ describe GitlabAwesomeRelease::CLI do
     let(:filename) { nil }
     let(:from_tag) { nil }
     let(:to_tag)   { nil }
-    let(:api_endpoint)         { "http://example.com/api/v3" }
+    let(:api_endpoint)         { "http://example.com/api/v4" }
     let(:private_token)        { "XXXXXXXXXXXXXXXXXXX" }
     let(:project_name)         { "group/name" }
     let(:escaped_project_name) { "group%2Fname" }
@@ -45,9 +40,9 @@ describe GitlabAwesomeRelease::CLI do
         with(headers: { "Accept" => "application/json", "Private-Token" => private_token }).
         to_return(status: 200, body: read_stub("repository_compare.json"), headers: {})
 
-      stub_request(:get, %r{#{api_endpoint}/projects/#{escaped_project_name}/merge_requests}).
+      stub_request(:get, %r{#{api_endpoint}/projects/#{escaped_project_name}/merge_requests/[0-9]+}).
         with(headers: { "Accept" => "application/json", "Private-Token" => private_token }).
-        to_return(status: 200, body: read_stub("merge_requests_with_iid.json"), headers: {})
+        to_return(status: 200, body: read_stub("merge_request.json"), headers: {})
     end
 
     context "When both 'from_tag' and 'to_tag' are empty" do
@@ -100,7 +95,7 @@ describe GitlabAwesomeRelease::CLI do
     let(:from_tag) { "v0.0.1" }
     let(:to_tag)   { "v0.0.2" }
     let(:label)    { "ver0.0.2" }
-    let(:api_endpoint)         { "http://example.com/api/v3" }
+    let(:api_endpoint)         { "http://example.com/api/v4" }
     let(:private_token)        { "XXXXXXXXXXXXXXXXXXX" }
     let(:project_name)         { "group/name" }
     let(:escaped_project_name) { "group%2Fname" }
@@ -111,11 +106,11 @@ describe GitlabAwesomeRelease::CLI do
         with(headers: { "Accept" => "application/json", "Private-Token" => private_token }).
         to_return(status: 200, body: read_stub("repository_compare.json"), headers: {})
 
-      stub_request(:get, %r{#{api_endpoint}/projects/#{escaped_project_name}/merge_requests}).
-        with(headers: { "Accept" => "application/json", "Private-Token" => private_token }).
-        to_return(status: 200, body: read_stub("merge_requests_with_iid.json"), headers: {})
-
       stub_request(:put, %r{#{api_endpoint}/projects/#{escaped_project_name}/merge_requests/[0-9]+}).
+        with(headers: { "Accept" => "application/json", "Private-Token" => private_token }).
+        to_return(status: 200, body: read_stub("merge_request.json"), headers: {})
+
+      stub_request(:get, %r{#{api_endpoint}/projects/#{escaped_project_name}/merge_requests/[0-9]+}).
         with(headers: { "Accept" => "application/json", "Private-Token" => private_token }).
         to_return(status: 200, body: read_stub("merge_request.json"), headers: {})
     end

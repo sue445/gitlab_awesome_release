@@ -9,7 +9,7 @@ describe GitlabAwesomeRelease::Project do
     )
   end
 
-  let(:api_endpoint)         { "http://example.com/api/v3" }
+  let(:api_endpoint)         { "http://example.com/api/v4" }
   let(:private_token)        { "XXXXXXXXXXXXXXXXXXX" }
   let(:project_name)         { "group/name" }
   let(:escaped_project_name) { "group%2Fname" }
@@ -56,9 +56,9 @@ describe GitlabAwesomeRelease::Project do
     subject { project.merge_request_summary(iid) }
 
     before do
-      stub_request(:get, "#{api_endpoint}/projects/#{escaped_project_name}/merge_requests?iid=#{iid}").
+      stub_request(:get, "#{api_endpoint}/projects/#{escaped_project_name}/merge_requests/#{iid}").
         with(headers: { "Accept" => "application/json", "Private-Token" => private_token }).
-        to_return(status: 200, body: read_stub("merge_requests_with_iid.json"), headers: {})
+        to_return(status: 200, body: read_stub("merge_request.json"), headers: {})
     end
 
     let(:iid) { 5 }

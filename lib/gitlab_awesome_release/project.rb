@@ -119,16 +119,14 @@ module GitlabAwesomeRelease
 
     # find MergeRequest with iid
     def merge_request(iid)
-      mr = Gitlab.merge_requests(@project_name, iid: iid).first
-      assert_merge_request_iid(mr, iid) if mr
-      mr
+      Gitlab.merge_request(@project_name, iid)
     end
 
     def add_merge_request_label(mr, label)
       labels = mr.labels
       labels << label
 
-      Gitlab.update_merge_request(@project_name, mr.id, labels: labels.uniq.join(","))
+      Gitlab.update_merge_request(@project_name, mr.iid, labels: labels.uniq.join(","))
       @logger.info "Add [#{label}] to !#{mr.iid} #{mr.title}"
     end
 
@@ -153,11 +151,6 @@ module GitlabAwesomeRelease
         mr_iids.each_with_object("") do |iid, str|
           str << merge_request_summary(iid) + "\n"
         end
-      end
-
-      def assert_merge_request_iid(mr, iid)
-        # NOTE: MR is found, but server is old GitLab?
-        raise "MergeRequest iid does not match (expected #{iid}, but #{mr.iid})" unless iid == mr.iid
       end
   end
 end
