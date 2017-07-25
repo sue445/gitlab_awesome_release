@@ -1,6 +1,11 @@
 ## Unreleased
-[full changelog](https://gitlab.com/sue445/gitlab_awesome_release/compare/v0.1.2...HEAD)
+[full changelog](https://gitlab.com/sue445/gitlab_awesome_release/compare/v1.0.0...HEAD)
 
+
+## v1.0.0
+[full changelog](https://gitlab.com/sue445/gitlab_awesome_release/compare/v0.1.2...v1.0.0)
+
+* :warning: Drop support GitLab API v3 and support GitLab API v4 [!28](https://gitlab.com/sue445/gitlab_awesome_release/merge_requests/28) *@sue445*
 
 ## v0.1.2
 [full changelog](https://gitlab.com/sue445/gitlab_awesome_release/compare/v0.1.1...v0.1.2)
