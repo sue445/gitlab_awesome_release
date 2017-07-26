@@ -12,7 +12,8 @@ see [CHANGELOG.md](CHANGELOG.md)
 ## Requirements
 
 * Ruby v2.1+
-* GitLab v7.11.0+
+* GitLab v9.0.0+
+* GitLab API v4
 
 ## Installation
 
