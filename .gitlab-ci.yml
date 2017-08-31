@@ -1,5 +1,6 @@
 stages:
   - test
+  - deploy
 
 .job_template: &job_definition
   variables:
@@ -56,3 +57,17 @@ rubocop:
     - ./gitlab-ci/rubocop.sh
 
   allow_failure: true
+
+pages:
+  <<: *job_definition
+  image: drecom/centos-ruby:latest
+
+  stage: deploy
+
+  script:
+    - bundle exec yard
+  artifacts:
+    paths:
+    - public
+  only:
+    - master
