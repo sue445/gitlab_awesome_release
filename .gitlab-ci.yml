@@ -51,7 +51,7 @@ ruby2.4:rspec:
 
 rubocop:
   <<: *job_definition
-  image: drecom/centos-ruby
+  image: drecom/centos-ruby:2.4.0
 
   script:
     - ./gitlab-ci/rubocop.sh
@@ -60,7 +60,7 @@ rubocop:
 
 pages:
   <<: *job_definition
-  image: drecom/centos-ruby:latest
+  image: drecom/centos-ruby
 
   stage: deploy
 
