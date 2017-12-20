@@ -54,7 +54,7 @@ rubocop:
   image: drecom/centos-ruby:2.4.0
 
   script:
-    - ./gitlab-ci/rubocop.sh
+    - bundle exec rubocop
 
   allow_failure: true
 
