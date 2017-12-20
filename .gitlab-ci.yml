@@ -4,11 +4,9 @@ stages:
 
 .job_template: &job_definition
   variables:
-    CI: "true"
     BUNDLE_CACHE: "vendor/bundle/"
 
   cache:
-    untracked: true
     key: "$CI_BUILD_NAME"
     paths:
       - vendor/bundle/
@@ -54,7 +52,7 @@ rubocop:
   image: drecom/centos-ruby:2.4.0
 
   script:
-    - ./gitlab-ci/rubocop.sh
+    - bundle exec rubocop
 
   allow_failure: true
 
