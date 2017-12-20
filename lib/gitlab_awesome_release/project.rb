@@ -100,7 +100,7 @@ module GitlabAwesomeRelease
 
       merge_request_iids =
         commits.map do |commit|
-          commit["message"] =~ /^Merge branch .*See merge request \!(\d+)$/m
+          commit["message"] =~ /^Merge branch .*See merge request .*\!(\d+)$/m
           Regexp.last_match(1)
         end
 
