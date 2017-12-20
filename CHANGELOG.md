@@ -1,6 +1,14 @@
 ## Unreleased
-[full changelog](https://gitlab.com/sue445/gitlab_awesome_release/compare/v1.0.0...HEAD)
+[full changelog](https://gitlab.com/sue445/gitlab_awesome_release/compare/v1.0.1...HEAD)
 
+
+## v1.0.1
+[full changelog](https://gitlab.com/sue445/gitlab_awesome_release/compare/v1.0.0...v1.0.1)
+
+* Deploy yard to GitLab Pages [!29](https://gitlab.com/sue445/gitlab_awesome_release/merge_requests/29) *@sue445*
+* Tweak .gitlab-ci.yml [!30](https://gitlab.com/sue445/gitlab_awesome_release/merge_requests/30) *@sue445*
+* Support new merge commit format for GitLab v10.0.0+ [!31](https://gitlab.com/sue445/gitlab_awesome_release/merge_requests/31) *@sue445*
+* Refactor .gitlab-ci.yml [!32](https://gitlab.com/sue445/gitlab_awesome_release/merge_requests/32) *@sue445*
 
 ## v1.0.0
 [full changelog](https://gitlab.com/sue445/gitlab_awesome_release/compare/v0.1.2...v1.0.0)
